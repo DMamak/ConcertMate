@@ -5,9 +5,20 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.concertmate.Utils.HttpUtils;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,7 +37,32 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-    }
+
+        RequestParams rp = new RequestParams();
+        rp.add("apikey", "");
+        rp.add("size","1");
+        rp.add("countryCode","IE");
+
+        HttpUtils.get("",rp, new JsonHttpResponseHandler(){
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                   JSONArray eventsArray = response.getJSONObject("_embedded").getJSONArray("events");
+                    Log.i("INFO",String.valueOf(eventsArray.get(0)));
+                }catch (Exception e){
+                    Log.e("ERROR","error with getting json array from api",e);
+                }
+
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
+
+            }
+        });
+
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
