@@ -23,7 +23,7 @@ public class Base extends AppCompatActivity {
     List<Concert> concertList = new ArrayList<>();
 
     public void ticketmasterApiRequest(final RequestQueue mRequestQueue) {
-        String url = "https://app.ticketmaster.com/discovery/v2/events.json?&apikey="+getString(R.string.ticketmasterAPI)+"&countryCode=IE&classificationName=Music&size=200";
+        String url = "https://app.ticketmaster.com/discovery/v2/events.json?&apikey="+getString(R.string.ticketmasterAPI)+"&countryCode=IE&classificationName=Music&size=100";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, new Response.Listener<JSONObject>() {
