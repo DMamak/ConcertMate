@@ -49,13 +49,16 @@ public class Base extends AppCompatActivity {
                                 genre = event.getJSONArray("classifications").getJSONObject(0).getJSONObject("genre").getString("name");
                                 JSONObject venue = event.getJSONObject("_embedded").getJSONArray("venues").getJSONObject(0);
                                 venueName=venue.getString("name");
-                                postCode=venue.getString("postalCode");
-                                address=venue.getJSONObject("address").getString("line1");
-                                longitude=venue.getJSONObject("location").getString("longitude");
-                                latitude=venue.getJSONObject("location").getString("latitude");
-                                phone=venue.getJSONObject("boxOfficeInfo").getString("phoneNumberDetail");
+                                postCode=(venue.has("postalCode"))?venue.getString("postalCode"):"N/A";
+                                address=(venue.has("address") && venue.getJSONObject("address").has("line1"))
+                            ? venue.getJSONObject("address").getString("line1") : "N/A" ;
+                                longitude=venue.has("location") && venue.getJSONObject("location").has("longitude") ? venue.getJSONObject("location").getString("longitude"):"N/A";
+                                latitude=venue.has("location") && venue.getJSONObject("location").has("latitude") ? venue.getJSONObject("location").getString("latitude"):"N/A";
+                                phone=(venue.has("boxOfficeInfo") && venue.getJSONObject("boxOfficeInfo").has("phoneNumberDetail"))
+                                        ? venue.getJSONObject("boxOfficeInfo").getString("phoneNumberDetail") :"N/A";
+
                                 parking=venue.has("parkingDetail") ? venue.getString("parkingDetail") : "N/A";
-                                access=venue.getString("accessibleSeatingDetail");
+                                access=(venue.has("accessibleSeatingDetail"))?venue.getString("accessibleSeatingDetail"):"N/A";
                                 concertList.add(new Concert(name, imageURL, date, time, genre,
                                         new Venue(venueName,postCode,address,longitude,latitude,phone,parking,access)));
                             }
