@@ -38,7 +38,7 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
         Concert concert = concertList.get(i);
         viewHolder.name.setText(concert.getName());
         viewHolder.date.setText(concert.getDate());
-        viewHolder.venue.setText(concert.getVenue());
+        viewHolder.venue.setText(concert.getVenue().getVenueName());
         Picasso.get().load(concert.getImageURL()).fit().into(viewHolder.picture);
 
     }

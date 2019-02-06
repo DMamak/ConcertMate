@@ -9,6 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.concertmate.Models.Concert;
+import com.example.concertmate.Models.Venue;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,11 +31,8 @@ public class Base extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        String name;
+                        String name,date,time,genre,venueName,postCode,address,longitude,latitude,phone,parking,access;
                         String imageURL = "";
-                        String date;
-                        String time;
-                        String genre;
                         try {
                             JSONArray events = response.getJSONObject("_embedded").getJSONArray("events");
                             for (int x = 0; x < events.length(); x++) {
@@ -49,7 +47,17 @@ public class Base extends AppCompatActivity {
                                 date = event.getJSONObject("dates").getJSONObject("start").getString("localDate");
                                 time = event.getJSONObject("dates").getJSONObject("start").has("localTime") ? event.getJSONObject("dates").getJSONObject("start").getString("localTime") : "TBD";
                                 genre = event.getJSONArray("classifications").getJSONObject(0).getJSONObject("genre").getString("name");
-                                concertList.add(new Concert(name, imageURL, date, time, genre));
+                                JSONObject venue = event.getJSONObject("_embedded").getJSONArray("venues").getJSONObject(0);
+                                venueName=venue.getString("name");
+                                postCode=venue.getString("postalCode");
+                                address=venue.getJSONObject("address").getString("line1");
+                                longitude=venue.getJSONObject("location").getString("longitude");
+                                latitude=venue.getJSONObject("location").getString("latitude");
+                                phone=venue.getJSONObject("boxOfficeInfo").getString("phoneNumberDetail");
+                                parking=venue.has("parkingDetail") ? venue.getString("parkingDetail") : "N/A";
+                                access=venue.getString("accessibleSeatingDetail");
+                                concertList.add(new Concert(name, imageURL, date, time, genre,
+                                        new Venue(venueName,postCode,address,longitude,latitude,phone,parking,access)));
                             }
 
                         } catch (Exception e) {
