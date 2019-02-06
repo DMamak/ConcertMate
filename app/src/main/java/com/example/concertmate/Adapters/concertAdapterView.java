@@ -19,9 +19,8 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
     private List<Concert> concertList;
     private Context context;
 
-    public concertAdapterView(List<Concert> concertList, Context context) {
+    public concertAdapterView(List<Concert> concertList) {
         this.concertList = concertList;
-        this.context = context;
 
     }
 

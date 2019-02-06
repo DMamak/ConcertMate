@@ -1,6 +1,9 @@
 package com.example.concertmate.Models;
 
-public class Concert {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Concert implements Parcelable {
     private String name;
     private String imageURL;
     private String date;
@@ -64,4 +67,41 @@ public class Concert {
     public Venue getVenue() {
         return venue;
     }
+
+    protected Concert(Parcel in) {
+        name = in.readString();
+        imageURL = in.readString();
+        date = in.readString();
+        time = in.readString();
+        genre = in.readString();
+        venue = (Venue) in.readValue(Venue.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(imageURL);
+        dest.writeString(date);
+        dest.writeString(time);
+        dest.writeString(genre);
+        dest.writeValue(venue);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Concert> CREATOR = new Parcelable.Creator<Concert>() {
+        @Override
+        public Concert createFromParcel(Parcel in) {
+            return new Concert(in);
+        }
+
+        @Override
+        public Concert[] newArray(int size) {
+            return new Concert[size];
+        }
+    };
 }
