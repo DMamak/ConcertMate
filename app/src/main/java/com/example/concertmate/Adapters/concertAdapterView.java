@@ -37,6 +37,8 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
     public void onBindViewHolder(@NonNull myViewHolder viewHolder, int i) {
         Concert concert = concertList.get(i);
         viewHolder.name.setText(concert.getName());
+        viewHolder.date.setText(concert.getDate());
+        viewHolder.venue.setText(concert.getVenue());
         Picasso.get().load(concert.getImageURL()).fit().into(viewHolder.picture);
 
     }
@@ -47,13 +49,17 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
     }
 
     class myViewHolder extends RecyclerView.ViewHolder{
-        public TextView name;
-        public ImageView picture;
+        private TextView name;
+        private TextView date;
+        private TextView venue;
+        private ImageView picture;
 
-        public myViewHolder(View itemView) {
+        private myViewHolder(View itemView) {
             super(itemView);
             picture=itemView.findViewById(R.id.band_picture);
             name=itemView.findViewById(R.id.band_name);
+            date=itemView.findViewById(R.id.concert_date);
+            venue=itemView.findViewById(R.id.venue_name);
         }
     }
 }

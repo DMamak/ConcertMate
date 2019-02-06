@@ -17,7 +17,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="band"
-            android:paddingBottom="10dp"/>
+            android:paddingBottom="10dp"
+            android:scaleType="centerCrop" />
+
+        <View
+            android:id="@+id/gradient_view"
+            android:layout_width="match_parent"
+            android:layout_height="203dp"
+            android:background="@drawable/gradient" />
 
         <TextView
             android:id="@+id/band_name"
@@ -25,10 +32,30 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="24dp"
-            android:layout_marginBottom="26dp"
-            android:text="Foo Fighters"
-            android:textAppearance="@style/ShadowTextStyle" />
+            android:layout_marginStart="23dp"
+            android:layout_marginBottom="39dp"
+            android:textSize="18sp"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/concert_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/band_name"
+            android:layout_alignStart="@+id/band_name"
+            android:layout_marginTop="-39dp"
+            android:textSize="12sp"
+            android:textColor="@color/blueish"/>
+
+        <TextView
+            android:id="@+id/venue_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/concert_date"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="95dp"
+            android:textSize="12sp"
+            android:textColor="@color/grayish"/>
 
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

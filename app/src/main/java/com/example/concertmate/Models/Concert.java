@@ -6,6 +6,7 @@ public class Concert {
     private String date;
     private String time;
     private String genre;
+    private String venue;
 
     public Concert(String name, String imageURL, String date, String time, String genre) {
         this.name = name;
@@ -53,5 +54,13 @@ public class Concert {
 
     public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public String getVenue() {
+        return venue;
+    }
+
+    public void setVenue(String venue) {
+        this.venue = venue;
     }
 }
