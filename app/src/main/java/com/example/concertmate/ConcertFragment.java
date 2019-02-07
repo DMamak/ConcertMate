@@ -36,14 +36,14 @@ public class ConcertFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.recycler_fragment,container,false);
         Bundle bundle = this.getArguments();
-        char check = bundle.getChar("true");
+        int check = bundle.getInt("position");
         RecyclerView mRecycler = view.findViewById(R.id.recycler);
         adapter = new concertAdapterView(concertList);
         mRecycler.setAdapter(adapter);
         RecyclerView.LayoutManager mLayoutManager =new LinearLayoutManager(getActivity());
         mRecycler.setLayoutManager(mLayoutManager);
         mRequestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-        if(check == 'n'){
+        if(check == 1){
             // add favorites method here  !!!!!!!!
         }else{
             ticketmasterApiRequest(mRequestQueue);
