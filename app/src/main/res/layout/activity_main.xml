@@ -35,7 +35,7 @@
         app:backgroundTint="@color/blueish"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@drawable/ic_filter_list_black_24dp" />
 
     <SearchView
         android:layout_width="match_parent"
