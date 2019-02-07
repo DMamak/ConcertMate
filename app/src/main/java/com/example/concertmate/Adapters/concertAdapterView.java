@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,9 +17,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.myViewHolder>{
+public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.myViewHolder> implements Filterable {
     private List<Concert> concertList;
-    private Context context;
 
     public concertAdapterView(List<Concert> concertList) {
         this.concertList = concertList;
@@ -45,6 +46,11 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
     @Override
     public int getItemCount() {
         return concertList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return null;
     }
 
     class myViewHolder extends RecyclerView.ViewHolder{
