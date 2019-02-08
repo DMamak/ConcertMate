@@ -1,5 +1,7 @@
 package com.example.concertmate;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -32,10 +34,9 @@ public class ConcertFragment extends Fragment {
     concertAdapterView adapter;
     RequestQueue mRequestQueue;
     ArrayList<Concert> concertList = new ArrayList<>();
-
     public ConcertFragment() {
     }
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.recycler_fragment,container,false);
         Bundle bundle = this.getArguments();
         int check = bundle.getInt("position");
@@ -44,10 +45,11 @@ public class ConcertFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),"YA CLICKED ME MATE!!!!",Toast.LENGTH_LONG).show();
+               Intent intent = new Intent(getActivity().getApplicationContext(),FilterActivity.class);
+               startActivity(intent);
+
             }
         });
-
         adapter = new concertAdapterView(concertList);
         mRecycler.setAdapter(adapter);
         RecyclerView.LayoutManager mLayoutManager =new LinearLayoutManager(getActivity());
