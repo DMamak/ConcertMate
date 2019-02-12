@@ -15,8 +15,7 @@ public class FilterFragment extends Fragment {
     }
 
     public static FilterFragment newInstance() {
-        FilterFragment fragment = new FilterFragment();
-        return fragment;
+        return new FilterFragment();
     }
 
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState){

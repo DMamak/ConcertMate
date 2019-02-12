@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.example.concertmate.Adapters.ViewPagerAdapter;
 
 
-public class TabFragment extends Fragment {
+public class TabFragment extends BaseFragment {
 
     public static TabFragment newInstance() {
         TabFragment fragment = new TabFragment();
