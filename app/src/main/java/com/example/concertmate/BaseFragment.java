@@ -3,7 +3,6 @@ package com.example.concertmate;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -22,11 +21,20 @@ import java.util.ArrayList;
 
 public class BaseFragment extends Fragment {
     ArrayList<Concert> concertList = new ArrayList<>();
+     static ArrayList<String> sb = new ArrayList<>();
+
     public void ticketmasterApiRequest(Context context,final concertAdapterView adapter) {
         RequestQueue mRequestQueue;
 
         mRequestQueue = Volley.newRequestQueue(context);
-        String url = "https://app.ticketmaster.com/discovery/v2/events.json?&apikey=" + getString(R.string.ticketmasterAPI) + "&countryCode=IE&classificationName=Music&size=200";
+            concertList.clear();
+
+        String url = "https://app.ticketmaster.com/discovery/v2/events.json?&apikey=" + getString(R.string.ticketmasterAPI) + "&countryCode=IE&size=200";
+        if(sb.size() >0){
+           url = url.concat("&classificationName=").concat(sb.toString());
+        }else{
+            url = url.concat("&classificationName=Music");
+        }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, new Response.Listener<JSONObject>() {
                     @Override
@@ -78,4 +86,6 @@ public class BaseFragment extends Fragment {
 
         mRequestQueue.add(jsonObjectRequest);
     }
+
+
 }
