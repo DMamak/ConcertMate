@@ -7,4 +7,14 @@
     <string name="date">Dates</string>
     <string name="category">Categories</string>
     <string name="title_activity_base">ConcertMate</string>
+    <string name="alternative">Alternative and Indie</string>
+    <string name="club">Club and Dance</string>
+    <string name="country">Country/Fold</string>
+    <string name="metal">Hard Rock/Metal</string>
+    <string name="jazz">Jazz/Blues</string>
+    <string name="rb">R&amp;B/Urban Soul</string>
+    <string name="rap">Rap and Hip-Hop</string>
+    <string name="rock">Rock</string>
+    <string name="pop">Pop</string>
+    <string name="tribute">Tribute Bands</string>
 </resources>
