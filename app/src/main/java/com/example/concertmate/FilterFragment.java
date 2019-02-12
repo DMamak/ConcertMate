@@ -13,7 +13,7 @@ public class FilterFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.filterFragment,container,false);
+        View view = inflater.inflate(R.layout.filter_fragment,container,false);
 
 
         return view;

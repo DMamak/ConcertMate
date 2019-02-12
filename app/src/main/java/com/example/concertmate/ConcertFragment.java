@@ -39,13 +39,6 @@ public class ConcertFragment extends Fragment {
         Bundle bundle = this.getArguments();
         int check = bundle.getInt("position");
         RecyclerView mRecycler = view.findViewById(R.id.recycler);
-        FloatingActionButton fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
         adapter = new concertAdapterView(concertList);
         mRecycler.setAdapter(adapter);
         RecyclerView.LayoutManager mLayoutManager =new LinearLayoutManager(getActivity());
