@@ -4,4 +4,6 @@
     <string name="title_activity_filter">FIlterActivity</string>
     <string name="filter">Filter</string>
     <string name="cancel">Cancel</string>
+    <string name="date">Dates</string>
+    <string name="category">Categories</string>
 </resources>
