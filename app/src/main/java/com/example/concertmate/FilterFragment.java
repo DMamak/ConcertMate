@@ -12,6 +12,11 @@ public class FilterFragment extends Fragment {
     public FilterFragment() {
     }
 
+    public static FilterFragment newInstance() {
+        FilterFragment fragment = new FilterFragment();
+        return fragment;
+    }
+
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.filter_fragment,container,false);
 

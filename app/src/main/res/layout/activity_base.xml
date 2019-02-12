@@ -17,10 +17,11 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_filter_list_black_24dp" />
 
-    <fragment
-        android:id="@+id/fragment"
-        android:name="com.example.concertmate.TabFragment"
+    <FrameLayout
+        android:id="@+id/mainFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>
