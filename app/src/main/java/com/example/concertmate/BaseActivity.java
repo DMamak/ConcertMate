@@ -24,6 +24,7 @@ public class BaseActivity extends AppCompatActivity {
                 FilterFragment filterFragment = FilterFragment.newInstance(); //get a new Fragment instance
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.mainFragment, filterFragment)
+                        .addToBackStack(null)
                         .commit();
             }
         });

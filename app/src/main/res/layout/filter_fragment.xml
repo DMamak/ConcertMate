@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".FIlterActivity">
+    android:layout_height="match_parent">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/appBarLayout2"
@@ -21,7 +20,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_cancel_name"
-            android:onClick="onCancelButton"
             android:text="@string/cancel"
             android:textColor="@color/white"
             android:textStyle="bold"
@@ -36,7 +34,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_action_name"
-            android:onClick="onFilterButton"
             android:text="@string/filter"
             android:textColor="@color/white"
             android:textStyle="bold"
