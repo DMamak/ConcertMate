@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.concertmate.R;
 
@@ -38,6 +39,8 @@ public class FilterFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.filter_fragment, container, false);
         final Calendar c = Calendar.getInstance();
+        final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
         fromDate = view.findViewById(R.id.fromDate);
         toDate = view.findViewById(R.id.toDate);
         alternative = view.findViewById(R.id.checkBoxAlternative);
@@ -51,10 +54,10 @@ public class FilterFragment extends BaseFragment {
         pop = view.findViewById(R.id.checkBoxPop);
         tribute = view.findViewById(R.id.checkBoxTribute);
         cancelButton = view.findViewById(R.id.cancel_filter);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-       fromDate.setText(sdf.format(c.getTime()));
-       c.add(Calendar.MONTH, 3);
-       toDate.setText(sdf.format(c.getTime()));
+        fromDate.setText(sdf.format(c.getTime()));
+        c.add(Calendar.MONTH, 3);
+        toDate.setText(sdf.format(c.getTime()));
+        c.add(Calendar.MONTH, -3);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +66,56 @@ public class FilterFragment extends BaseFragment {
                         .replace(R.id.mainFragment, tabFragment)
                         .addToBackStack(null)
                         .commit(); // add it to the current activity
+            }
+        });
+
+        final DatePickerDialog.OnDateSetListener fromDateDialog = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                c.set(Calendar.YEAR, year);
+                c.set(Calendar.MONTH, (monthOfYear));
+                c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateFromLabel(sdf, c);
+            }
+
+        };
+
+        final DatePickerDialog.OnDateSetListener toDateDialog = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                c.set(Calendar.YEAR, year);
+                c.set(Calendar.MONTH, (monthOfYear));
+                c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateToLabel(sdf, c);
+            }
+
+        };
+
+        fromDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String source = fromDate.getText().toString();
+                String[] sourceSplit = source.split("-");
+                int day = Integer.parseInt(sourceSplit[2]);
+                int month = Integer.parseInt(sourceSplit[1]);
+                int year = Integer.parseInt(sourceSplit[0]);
+                // TODO Auto-generated method stub
+                new DatePickerDialog(getContext(), fromDateDialog, day, month - 1, year).show();
+            }
+        });
+
+        toDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String source = toDate.getText().toString();
+                String[] sourceSplit = source.split("-");
+                int day = Integer.parseInt(sourceSplit[2]);
+                int month = Integer.parseInt(sourceSplit[1]);
+                int year = Integer.parseInt(sourceSplit[0]);
+                // TODO Auto-generated method stub
+                new DatePickerDialog(getContext(), toDateDialog, day, month - 1, year).show();
             }
         });
 
@@ -102,42 +155,46 @@ public class FilterFragment extends BaseFragment {
                     classificationName = classificationName.concat("tribute,");
                 }
                 SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
-                String source = fromDate.getText().toString();
-                String[] sourceSplit = source.split("-");
-                int day = Integer.parseInt(sourceSplit[2]);
-                int month = Integer.parseInt(sourceSplit[1]);
-                int year = Integer.parseInt(sourceSplit[0]);
                 GregorianCalendar calendar = new GregorianCalendar();
-                calendar.set(day, month - 1, year);
-                Date data1 = calendar.getTime();
 
+                if (getDateTimeAsDate(calendar, fromDate.getText().toString()).after(getDateTimeAsDate(calendar, toDate.getText().toString()))) {
+                    Toast.makeText(getContext(), "From Date is after To Date", Toast.LENGTH_LONG).show();
+                } else {
 
-                source = toDate.getText().toString();
-                sourceSplit = source.split("-");
-                day = Integer.parseInt(sourceSplit[2]);
-                month = Integer.parseInt(sourceSplit[1]);
-                year = Integer.parseInt(sourceSplit[0]);
-                calendar.set(day, month - 1, year, 23, 59, 59);
-                Date data2 = calendar.getTime();
-                String dayFormatted = myFormat.format(data1);
-                Log.i("INFO", dayFormatted);
-                SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("class", classificationName);
-                editor.putString("fromDate", myFormat.format(data1));
-                editor.putString("toDate", myFormat.format(data2));
-                editor.apply();
-                TabFragment tabFragment = TabFragment.newInstance();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.mainFragment, tabFragment)
-                        .addToBackStack(null)
-                        .commit();
+                    SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("class", classificationName);
+                    editor.putString("fromDate", myFormat.format(getDateTimeAsDate(calendar, fromDate.getText().toString())));
+                    editor.putString("toDate", myFormat.format(getDateTimeAsDate(calendar, toDate.getText().toString())));
+                    editor.apply();
+                    TabFragment tabFragment = TabFragment.newInstance();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.mainFragment, tabFragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
+
             }
         });
 
         return view;
     }
 
+    public void updateFromLabel(SimpleDateFormat sdf, Calendar c) {
+        fromDate.setText(sdf.format(c.getTime()));
+    }
 
+    public void updateToLabel(SimpleDateFormat sdf, Calendar c) {
+        toDate.setText(sdf.format(c.getTime()));
+    }
+
+    public Date getDateTimeAsDate(GregorianCalendar calendar, String dateString) {
+        String[] sourceSplit = dateString.split("-");
+        int day = Integer.parseInt(sourceSplit[2]);
+        int month = Integer.parseInt(sourceSplit[1]);
+        int year = Integer.parseInt(sourceSplit[0]);
+        calendar.set(day, month - 1, year);
+        Date date = calendar.getTime();
+        return date;
+    }
 }
