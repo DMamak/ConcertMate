@@ -1,4 +1,4 @@
-package com.example.concertmate;
+package com.example.concertmate.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,9 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.concertmate.Adapters.concertAdapterView;
+import com.example.concertmate.R;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 
 public class ConcertFragment extends BaseFragment {

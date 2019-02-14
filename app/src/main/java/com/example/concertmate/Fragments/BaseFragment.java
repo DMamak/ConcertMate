@@ -1,4 +1,4 @@
-package com.example.concertmate;
+package com.example.concertmate.Fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,6 +13,8 @@ import com.android.volley.toolbox.Volley;
 import com.example.concertmate.Adapters.concertAdapterView;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.Models.Venue;
+import com.example.concertmate.R;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

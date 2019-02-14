@@ -1,4 +1,4 @@
-package com.example.concertmate;
+package com.example.concertmate.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.concertmate.Adapters.ViewPagerAdapter;
+import com.example.concertmate.R;
 
 
 public class TabFragment extends BaseFragment {

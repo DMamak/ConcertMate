@@ -1,9 +1,9 @@
 package com.example.concertmate;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+
+import com.example.concertmate.Fragments.TabFragment;
 
 public class BaseActivity extends AppCompatActivity {
 

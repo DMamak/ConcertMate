@@ -22,11 +22,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FilterFragment"
+            android:name=".Fragments.FilterFragment"
             android:label="@string/title_activity_filter"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".TabFragment"
+            android:name=".Fragments.TabFragment"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.concertmate.ConcertFragment;
+import com.example.concertmate.Fragments.ConcertFragment;
 
 import java.util.ArrayList;
 import java.util.List;
