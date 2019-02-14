@@ -54,8 +54,11 @@ public class FilterFragment extends BaseFragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                fm.popBackStack();
+                TabFragment tabFragment= TabFragment.newInstance();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.mainFragment, tabFragment)
+                        .addToBackStack(null)
+                        .commit(); // add it to the current activity
             }
         });
         filterButton = view.findViewById(R.id.apply_filter);
@@ -124,7 +127,7 @@ public class FilterFragment extends BaseFragment {
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.mainFragment, tabFragment)
                         .addToBackStack(null)
-                        .commit(); // add it to the current activity
+                        .commit();
             }
         });
 
