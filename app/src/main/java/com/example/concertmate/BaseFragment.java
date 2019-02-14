@@ -1,6 +1,7 @@
 package com.example.concertmate;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import com.android.volley.Request;
@@ -12,39 +13,39 @@ import com.android.volley.toolbox.Volley;
 import com.example.concertmate.Adapters.concertAdapterView;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.Models.Venue;
-
-import org.apache.commons.lang3.StringUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import static android.content.Context.MODE_PRIVATE;
 
 public class BaseFragment extends Fragment {
 
 
     ArrayList<Concert> concertList = new ArrayList<>();
-    String fromDate,toDate,classificationName;
 
-
-    public void ticketmasterApiRequest(Context context,final concertAdapterView adapter) {
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        fromDate=sdf.format(c.getTime());
-        c.add(Calendar.MONTH, 3);
-        toDate=sdf.format(c.getTime());
-
+    public void ticketmasterApiRequest(Context context, final concertAdapterView adapter,Calendar c) {
+        String test="Music";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        StringBuilder url = new StringBuilder();
         RequestQueue mRequestQueue;
-
         mRequestQueue = Volley.newRequestQueue(context);
-            concertList.clear();
 
-        String url = "https://app.ticketmaster.com/discovery/v2/events.json?&apikey=" + getString(R.string.ticketmasterAPI) + "&countryCode=IE&size=200";
-        url = url.concat("&classificationName=").concat(classificationName);
+        url.append("https://app.ticketmaster.com/discovery/v2/events.json?&apikey=").append(getString(R.string.ticketmasterAPI))
+        .append("&countryCode=IE").append("&size=200").append("&classificationName=").append(pref.getString("class", test))
+                .append("&startDateTime=").append(pref.getString("fromDate", sdf.format(c.getTime())));
+        c.add(Calendar.MONTH, 3);
+
+        url.append("&endDateTime=").append(pref.getString("toDate",sdf.format(c.getTime())))
+        .append("&sort=").append("date,asc");
+
+        Log.i("INFO",url.toString());
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, url.toString(), new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         String name, date, time, genre, venueName, postCode, address, longitude, latitude, phone, parking, access;
