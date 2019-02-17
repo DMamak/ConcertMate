@@ -101,7 +101,6 @@ public class FilterFragment extends BaseFragment {
                 int day = Integer.parseInt(sourceSplit[2]);
                 int month = Integer.parseInt(sourceSplit[1]);
                 int year = Integer.parseInt(sourceSplit[0]);
-                // TODO Auto-generated method stub
                 new DatePickerDialog(getContext(), fromDateDialog, day, month - 1, year).show();
             }
         });
@@ -114,7 +113,6 @@ public class FilterFragment extends BaseFragment {
                 int day = Integer.parseInt(sourceSplit[2]);
                 int month = Integer.parseInt(sourceSplit[1]);
                 int year = Integer.parseInt(sourceSplit[0]);
-                // TODO Auto-generated method stub
                 new DatePickerDialog(getContext(), toDateDialog, day, month - 1, year).show();
             }
         });

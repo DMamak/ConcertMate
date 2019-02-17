@@ -17,8 +17,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.myViewHolder> implements Filterable {
-    private List<Concert> concertList;
+public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.myViewHolder>{
+    public List<Concert> concertList;
 
     public concertAdapterView(List<Concert> concertList) {
         this.concertList = concertList;
@@ -46,11 +46,6 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
     @Override
     public int getItemCount() {
         return concertList.size();
-    }
-
-    @Override
-    public Filter getFilter() {
-        return null;
     }
 
     class myViewHolder extends RecyclerView.ViewHolder{

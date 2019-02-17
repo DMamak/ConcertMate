@@ -28,8 +28,12 @@ public class BaseFragment extends Fragment {
 
     ArrayList<Concert> concertList = new ArrayList<>();
 
-    public void ticketmasterApiRequest(Context context, final concertAdapterView adapter,Calendar c) {
+    public void ticketmasterApiRequest(Context context, final concertAdapterView adapter,Calendar c,String s) {
+
         String test="Music";
+        s = s.trim();
+        s = s.replaceAll("\\s", "%20");
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         StringBuilder url = new StringBuilder();
@@ -37,12 +41,17 @@ public class BaseFragment extends Fragment {
         mRequestQueue = Volley.newRequestQueue(context);
 
         url.append("https://app.ticketmaster.com/discovery/v2/events.json?&apikey=").append(getString(R.string.ticketmasterAPI))
-        .append("&countryCode=IE").append("&size=200").append("&classificationName=").append(pref.getString("class", test))
-                .append("&startDateTime=").append(pref.getString("fromDate", sdf.format(c.getTime())));
+        .append("&countryCode=IE").append("&size=200").append("&classificationName=").append(pref.getString("class", test));
         c.add(Calendar.MONTH, 3);
-
-        url.append("&endDateTime=").append(pref.getString("toDate",sdf.format(c.getTime())))
-        .append("&sort=").append("date,asc");
+        if(StringUtils.isNotBlank(s)){
+            concertList.clear();
+            url.append("&keyword=").append(s);
+        }else{
+            concertList.clear();
+            url.append("&startDateTime=").append(pref.getString("fromDate", sdf.format(c.getTime())))
+                    .append("&endDateTime=").append(pref.getString("toDate",sdf.format(c.getTime())));
+        }
+        url.append("&sort=").append("date,asc");
 
         Log.i("INFO",url.toString());
 
