@@ -9,8 +9,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.Toast;
+
 import com.example.concertmate.Adapters.concertAdapterView;
 import com.example.concertmate.R;
 import com.example.concertmate.Utils.ConcertFilter;
@@ -67,13 +70,6 @@ public class ConcertFragment extends BaseFragment {
                     return false;
                 }
             });
-//            ImageView closeButton = mySearch.findViewById(R.id.search_close_btn);
-//            closeButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    ticketmasterApiRequest(getActivity().getApplicationContext(), adapter, c,"");
-//                }
-//            });
 
         }else{
             concertFilter = new ConcertFilter(concertList,adapter);
