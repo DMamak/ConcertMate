@@ -59,12 +59,14 @@ public class BaseFragment extends Fragment {
                 (Request.Method.GET, url.toString(), new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        String name, date, time, genre, venueName, postCode, address, longitude, latitude, phone, parking, access;
+                        String id, name, date, time, genre, venueName, postCode, address, longitude, latitude, phone, parking, access;
+                        boolean favorite = false;
                         String imageURL = "";
                         try {
                             JSONArray events = response.getJSONObject("_embedded").getJSONArray("events");
                             for (int x = 0; x < events.length(); x++) {
                                 JSONObject event = events.getJSONObject(x);
+                                id = event.getString("id");
                                 name = event.getString("name");
                                 final JSONArray images = event.getJSONArray("images");
                                 for (int y = 0; y < images.length(); y++) {
@@ -87,8 +89,8 @@ public class BaseFragment extends Fragment {
 
                                 parking = venue.has("parkingDetail") ? venue.getString("parkingDetail") : "N/A";
                                 access = (venue.has("accessibleSeatingDetail")) ? venue.getString("accessibleSeatingDetail") : "N/A";
-                                concertList.add(new Concert(name, imageURL, date, time, genre,
-                                        new Venue(venueName, postCode, address, longitude, latitude, phone, parking, access)));
+                                concertList.add(new Concert(id,name, imageURL, date, time, genre,
+                                        new Venue(venueName, postCode, address, longitude, latitude, phone, parking, access),favorite));
                             }
                             adapter.notifyDataSetChanged();
                         } catch (Exception e) {
