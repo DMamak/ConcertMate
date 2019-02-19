@@ -1,21 +1,28 @@
 package com.example.concertmate.Fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+
+import com.example.concertmate.Adapters.RecyclerItemClickListener;
 import com.example.concertmate.Adapters.concertAdapterView;
 import com.example.concertmate.R;
 import com.example.concertmate.Utils.ConcertFilter;
+import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Calendar;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class ConcertFragment extends BaseFragment {
@@ -65,6 +72,30 @@ public class ConcertFragment extends BaseFragment {
                     return false;
                 }
             });
+
+            mRecycler.addOnItemTouchListener(
+                    new RecyclerItemClickListener(getContext(), mRecycler ,new RecyclerItemClickListener.OnItemClickListener() {
+                        @Override public void onItemClick(View view, int position) {
+
+                            SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = pref.edit();
+                            Gson gson = new Gson();
+                            String json = gson.toJson(concertList.get(position));
+                            editor.putString("concertObj", json);
+                            editor.apply();
+                            SingleEventFragment singleEventFragment = SingleEventFragment.newInstance();
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.mainFragment, singleEventFragment)
+                                    .addToBackStack(null)
+                                    .commit();
+                        }
+
+
+                        @Override public void onLongItemClick(View view, int position) {
+                            // do whatever
+                        }
+                    })
+            );
 //            ImageView closeButton = mySearch.findViewById(R.id.search_close_btn);
 //            closeButton.setOnClickListener(new View.OnClickListener() {
 //                @Override
