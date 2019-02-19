@@ -65,11 +65,11 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            Log.i("TRUE", "TRUE");
                             box.setChecked(true);
                             concert.setFavorite(true);
                         } else {
-                            Log.i("False", "False");
+                            box.setChecked(false);
+                            concert.setFavorite(false);
                         }
 
                     }
