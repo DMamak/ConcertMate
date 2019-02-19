@@ -3,13 +3,15 @@ package com.example.concertmate.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Concert implements Parcelable {
+public class Concert {
+    private String Id;
     private String name;
     private String imageURL;
     private String date;
     private String time;
     private String genre;
     private Venue venue;
+    private boolean favorite;
 
     public Concert(String name, String imageURL, String date, String time, String genre,Venue venue) {
         this.name = name;
@@ -18,6 +20,14 @@ public class Concert implements Parcelable {
         this.time = time;
         this.genre = genre;
         this.venue = venue;
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
     }
 
     public void setVenue(Venue venue) {
@@ -68,40 +78,11 @@ public class Concert implements Parcelable {
         return venue;
     }
 
-    protected Concert(Parcel in) {
-        name = in.readString();
-        imageURL = in.readString();
-        date = in.readString();
-        time = in.readString();
-        genre = in.readString();
-        venue = (Venue) in.readValue(Venue.class.getClassLoader());
+    public boolean isFavorite() {
+        return favorite;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(imageURL);
-        dest.writeString(date);
-        dest.writeString(time);
-        dest.writeString(genre);
-        dest.writeValue(venue);
-    }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Concert> CREATOR = new Parcelable.Creator<Concert>() {
-        @Override
-        public Concert createFromParcel(Parcel in) {
-            return new Concert(in);
-        }
-
-        @Override
-        public Concert[] newArray(int size) {
-            return new Concert[size];
-        }
-    };
 }
