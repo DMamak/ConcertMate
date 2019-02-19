@@ -21,6 +21,8 @@ public class Concert {
         this.favorite=favorite;
     }
 
+    public Concert(){}
+
     public String getId() {
         return Id;
     }

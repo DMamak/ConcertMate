@@ -16,12 +16,16 @@ import android.widget.Toast;
 
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.myViewHolder>{
     public List<Concert> concertList;
+    private DatabaseReference mDatabase;
+
 
     public concertAdapterView(List<Concert> concertList) {
         this.concertList = concertList;
@@ -39,18 +43,19 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
     @Override
     public void onBindViewHolder(@NonNull myViewHolder viewHolder, int i) {
         final CheckBox box=viewHolder.box;
-        Concert concert = concertList.get(i);
+        final Concert concert = concertList.get(i);
         viewHolder.name.setText(concert.getName());
         viewHolder.date.setText(concert.getDate());
         viewHolder.venue.setText(concert.getVenue().getVenueName());
         Picasso.get().load(concert.getImageURL()).fit().into(viewHolder.picture);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(box.isChecked()){
-                    Log.i("INFO","CHECKED");
+                    mDatabase.child("concert").child(concert.getId()).setValue(concert);
                 }else{
-                    Log.i("INFO","UNCHECKED");
+                    mDatabase.child("concert").child(concert.getId()).removeValue();
                 }
             }
         });
