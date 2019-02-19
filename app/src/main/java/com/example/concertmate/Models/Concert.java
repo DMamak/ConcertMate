@@ -1,8 +1,5 @@
 package com.example.concertmate.Models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 public class Concert {
     private String Id;
     private String name;
@@ -13,13 +10,15 @@ public class Concert {
     private Venue venue;
     private boolean favorite;
 
-    public Concert(String name, String imageURL, String date, String time, String genre,Venue venue) {
+    public Concert(String id,String name, String imageURL, String date, String time, String genre,Venue venue,boolean favorite) {
+        this.Id = id;
         this.name = name;
         this.imageURL = imageURL;
         this.date = date;
         this.time = time;
         this.genre = genre;
         this.venue = venue;
+        this.favorite=favorite;
     }
 
     public String getId() {
