@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1013273050543",
+    "firebase_url": "https://concertmate-e87ec.firebaseio.com",
+    "project_id": "concertmate-e87ec",
+    "storage_bucket": "concertmate-e87ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013273050543:android:9ed248de8825723a",
+        "android_client_info": {
+          "package_name": "com.example.concertmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1013273050543-mh5vjtrrk5iveh7pnatlp2qfab18csdl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.concertmate",
+            "certificate_hash": "cefa20b1ba2f7c4164f05bb711c42ace480dc17f"
+          }
+        },
+        {
+          "client_id": "1013273050543-r46s26j32bu6442m0vjrmd6sv919nvqu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8ij9jFWoVodZF2kHd_JPgESzISLm5ow8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1013273050543-r46s26j32bu6442m0vjrmd6sv919nvqu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
