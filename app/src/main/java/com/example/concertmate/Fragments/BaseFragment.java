@@ -2,8 +2,10 @@ package com.example.concertmate.Fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -14,23 +16,29 @@ import com.example.concertmate.Adapters.concertAdapterView;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.Models.Venue;
 import com.example.concertmate.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class BaseFragment extends Fragment {
-
-
     ArrayList<Concert> concertList = new ArrayList<>();
+    String id, name, date, time, genre, venueName, postCode, address, longitude, latitude, phone, parking, access;
+    String imageURL = "";
 
-    public void ticketmasterApiRequest(Context context, final concertAdapterView adapter,Calendar c,String s) {
-
-        String test="Music";
+    public void ticketmasterApiRequest(Context context, final concertAdapterView adapter, Calendar c, String s) {
+        String test = "Music";
         s = s.trim();
         s = s.replaceAll("\\s", "%20");
 
@@ -41,30 +49,28 @@ public class BaseFragment extends Fragment {
         mRequestQueue = Volley.newRequestQueue(context);
 
         url.append("https://app.ticketmaster.com/discovery/v2/events.json?&apikey=").append(getString(R.string.ticketmasterAPI))
-        .append("&countryCode=IE").append("&size=200").append("&classificationName=").append(pref.getString("class", test));
+                .append("&countryCode=IE").append("&size=200").append("&classificationName=").append(pref.getString("class", test));
         c.add(Calendar.MONTH, 3);
-        if(StringUtils.isNotBlank(s)){
+        if (StringUtils.isNotBlank(s)) {
             concertList.clear();
             url.append("&keyword=").append(s);
-        }else{
+        } else {
             concertList.clear();
             url.append("&startDateTime=").append(pref.getString("fromDate", sdf.format(c.getTime())))
-                    .append("&endDateTime=").append(pref.getString("toDate",sdf.format(c.getTime())));
+                    .append("&endDateTime=").append(pref.getString("toDate", sdf.format(c.getTime())));
         }
         url.append("&sort=").append("date,asc");
 
-        Log.i("INFO",url.toString());
+        Log.i("INFO", url.toString());
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url.toString(), new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        String id, name, date, time, genre, venueName, postCode, address, longitude, latitude, phone, parking, access;
-                        boolean favorite = false;
-                        String imageURL = "";
                         try {
                             JSONArray events = response.getJSONObject("_embedded").getJSONArray("events");
                             for (int x = 0; x < events.length(); x++) {
+
                                 JSONObject event = events.getJSONObject(x);
                                 id = event.getString("id");
                                 name = event.getString("name");
@@ -89,8 +95,8 @@ public class BaseFragment extends Fragment {
 
                                 parking = venue.has("parkingDetail") ? venue.getString("parkingDetail") : "N/A";
                                 access = (venue.has("accessibleSeatingDetail")) ? venue.getString("accessibleSeatingDetail") : "N/A";
-                                concertList.add(new Concert(id,name, imageURL, date, time, genre,
-                                        new Venue(venueName, postCode, address, longitude, latitude, phone, parking, access),favorite));
+                                concertList.add(new Concert(id, name, imageURL, date, time, genre,
+                                        new Venue(venueName, postCode, address, longitude, latitude, phone, parking, access), false));
                             }
                             adapter.notifyDataSetChanged();
                         } catch (Exception e) {
