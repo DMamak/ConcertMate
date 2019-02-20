@@ -100,7 +100,7 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
             name = itemView.findViewById(R.id.band_name);
             date = itemView.findViewById(R.id.concert_date);
             venue = itemView.findViewById(R.id.venue_name);
-            box = itemView.findViewById(R.id.likeIcon);
+            box = itemView.findViewById(R.id.like_icon);
         }
     }
 

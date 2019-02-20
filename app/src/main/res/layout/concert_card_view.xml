@@ -49,7 +49,7 @@
             android:textColor="@color/blueish"/>
 
         <CheckBox
-            android:id="@+id/likeIcon"
+            android:id="@+id/like_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignEnd="@+id/gradient_view"
@@ -65,7 +65,7 @@
             android:checked="false"
             android:clickable="true"
             android:focusable="true"
-            android:stateListAnimator="@animator/scale"/>
+            android:stateListAnimator="@animator/scale" />
         <TextView
             android:id="@+id/venue_name"
             android:layout_width="wrap_content"
