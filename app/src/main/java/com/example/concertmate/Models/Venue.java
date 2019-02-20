@@ -20,6 +20,8 @@ public class Venue {
         this.parking = parking;
         this.accessible = accessible;
     }
+    public Venue(){}
+
 
     public String getVenueName() {
         return venueName;

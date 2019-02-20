@@ -32,6 +32,7 @@ public class TabFragment extends BaseFragment {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.addFragment(new ConcertFragment(), "Concert");
+        adapter.addFragment(new ConcertFragment(), "Favorite");
         viewPager.setAdapter(adapter);
     }
 }
