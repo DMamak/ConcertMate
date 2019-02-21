@@ -26,11 +26,10 @@ public class SingleEventFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.single_event_fragment,container,false);
         SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        TextView chujeView = view.findViewById(R.id.chujeView);
         Gson gson = new Gson();
         String json = pref.getString("concertObj", "");
         Concert concert = gson.fromJson(json, Concert.class);
-        chujeView.setText(concert.getName());
+
         return view;
     }
 }

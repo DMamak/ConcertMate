@@ -16,12 +16,13 @@ import com.example.concertmate.R;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+
 import org.apache.commons.lang3.StringUtils;
 import java.util.Calendar;
 
 
 public class ConcertFragment extends BaseFragment {
-    concertAdapterView adapter= new concertAdapterView(concertList);
+    concertAdapterView adapter;
     FavoriteConcertAdapter firebaseRecyclerAdapter;
 
     public ConcertFragment() {
@@ -45,6 +46,7 @@ public class ConcertFragment extends BaseFragment {
         Bundle bundle = this.getArguments();
         int check = bundle.getInt("position");
         if(check ==0) {
+            adapter = new concertAdapterView(concertList,getActivity());
             RecyclerView mRecycler = view.findViewById(R.id.recycler);
             mRecycler.setAdapter(adapter);
             ticketmasterApiRequest(getActivity().getApplicationContext(), adapter, c,"");
@@ -68,31 +70,6 @@ public class ConcertFragment extends BaseFragment {
                     return false;
                 }
             });
-
-//            mRecycler.addOnItemTouchListener(
-//                    new RecyclerItemClickListener(getContext(), mRecycler ,new RecyclerItemClickListener.OnItemClickListener() {
-//                        @Override public void onItemClick(View view, int position) {
-//
-//                            SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-//                            SharedPreferences.Editor editor = pref.edit();
-//                            Gson gson = new Gson();
-//                            String json = gson.toJson(concertList.get(position));
-//                            editor.putString("concertObj", json);
-//                            editor.apply();
-//                            SingleEventFragment singleEventFragment = SingleEventFragment.newInstance();
-//                            getActivity().getSupportFragmentManager().beginTransaction()
-//                                    .replace(R.id.mainFragment, singleEventFragment)
-//                                    .addToBackStack(null)
-//                                    .commit();
-//                        }
-//
-//
-//                        @Override public void onLongItemClick(View view, int position) {
-//                            // do whatever
-//                        }
-//                    })
-//            );
-
         }else{
             final Query query;
             query = FirebaseDatabase.getInstance()
