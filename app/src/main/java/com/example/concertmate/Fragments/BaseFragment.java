@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.JsonObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class BaseFragment extends Fragment {
     ArrayList<Concert> concertList = new ArrayList<>();
-    String id, name, date, time, genre, venueName, postCode, address, longitude, latitude, phone, parking, access;
+    String id, name, date, time, genre, venueName, postCode, address, longitude, latitude, phone, parking, access ,subGenre,youtube,twitter,facebook;
     String imageURL = "";
 
     public void ticketmasterApiRequest(Context context, final concertAdapterView adapter, Calendar c, String s) {
@@ -83,6 +84,24 @@ public class BaseFragment extends Fragment {
                                 date = event.getJSONObject("dates").getJSONObject("start").getString("localDate");
                                 time = event.getJSONObject("dates").getJSONObject("start").has("localTime") ? event.getJSONObject("dates").getJSONObject("start").getString("localTime") : "TBD";
                                 genre = event.getJSONArray("classifications").getJSONObject(0).getJSONObject("genre").getString("name");
+                                subGenre = event.getJSONArray("classifications").getJSONObject(0).getJSONObject("subGenre").getString("name");
+                                JSONObject embedded = event.getJSONObject("_embedded");
+                                if(embedded.has("attractions")) {
+                                    JSONObject attractions = embedded.getJSONArray("attractions").getJSONObject(0);
+                                    if (attractions.has("externalLinks")) {
+                                        JSONObject links = attractions.getJSONObject("externalLinks");
+                                        if (links.has("youtube")) {
+                                            youtube = links.getJSONArray("youtube").getJSONObject(0).getString("url");
+                                        }
+                                        if (links.has("twitter")) {
+                                            twitter = links.getJSONArray("twitter").getJSONObject(0).getString("url");
+                                        }
+                                        if (links.has("facebook")) {
+                                            facebook = links.getJSONArray("facebook").getJSONObject(0).getString("url");
+                                        }
+                                    }
+                                }
+
                                 JSONObject venue = event.getJSONObject("_embedded").getJSONArray("venues").getJSONObject(0);
                                 venueName = venue.getString("name");
                                 postCode = (venue.has("postalCode")) ? venue.getString("postalCode") : "N/A";
@@ -95,8 +114,8 @@ public class BaseFragment extends Fragment {
 
                                 parking = venue.has("parkingDetail") ? venue.getString("parkingDetail") : "N/A";
                                 access = (venue.has("accessibleSeatingDetail")) ? venue.getString("accessibleSeatingDetail") : "N/A";
-                                concertList.add(new Concert(id, name, imageURL, date, time, genre,
-                                        new Venue(venueName, postCode, address, longitude, latitude, phone, parking, access), false));
+                                concertList.add(new Concert(id, name, imageURL, date, time, genre,subGenre,
+                                        new Venue(venueName, postCode, address, longitude, latitude, phone, parking, access), false,youtube,twitter,facebook));
                             }
                             adapter.notifyDataSetChanged();
                         } catch (Exception e) {

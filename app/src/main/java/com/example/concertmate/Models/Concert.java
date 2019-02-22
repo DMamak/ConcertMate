@@ -7,21 +7,53 @@ public class Concert {
     private String date;
     private String time;
     private String genre;
+    private String subGenre;
+    private String youtubeLink;
+    private String facebookLink;
+    private String twitterLink;
     private Venue venue;
     private boolean favorite;
 
-    public Concert(String id,String name, String imageURL, String date, String time, String genre,Venue venue,boolean favorite) {
+    public Concert(String id,String name, String imageURL, String date, String time, String genre,String subGenre,Venue venue,boolean favorite,String youtube,String twitter,String facebook) {
         this.Id = id;
         this.name = name;
         this.imageURL = imageURL;
         this.date = date;
         this.time = time;
         this.genre = genre;
+        this.subGenre =subGenre;
         this.venue = venue;
         this.favorite=favorite;
+        this.youtubeLink=youtube;
+        this.twitterLink=twitter;
+        this.facebookLink=facebook;
     }
 
     public Concert(){}
+
+    public String getYoutubeLink() {
+        return youtubeLink;
+    }
+
+    public void setYoutubeLink(String youtubeLink) {
+        this.youtubeLink = youtubeLink;
+    }
+
+    public String getFacebookLink() {
+        return facebookLink;
+    }
+
+    public void setFacebookLink(String facebookLink) {
+        this.facebookLink = facebookLink;
+    }
+
+    public String getTwitterLink() {
+        return twitterLink;
+    }
+
+    public void setTwitterLink(String twitterLink) {
+        this.twitterLink = twitterLink;
+    }
 
     public String getId() {
         return Id;
@@ -37,6 +69,14 @@ public class Concert {
 
     public String getName() {
         return name;
+    }
+
+    public String getSubGenre() {
+        return subGenre;
+    }
+
+    public void setSubGenre(String subGenre) {
+        this.subGenre = subGenre;
     }
 
     public void setName(String name) {

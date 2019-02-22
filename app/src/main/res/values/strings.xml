@@ -17,4 +17,10 @@
     <string name="rock">Rock</string>
     <string name="pop">Pop</string>
     <string name="tribute">Tribute Bands</string>
+
+    <string name="name">Name:</string>
+    <string name="date_single">Date:</string>
+    <string name="time">Time:</string>
+    <string name="genre">Genre:</string>
+    <string name="sub_genre">Sub-Genre</string>
 </resources>

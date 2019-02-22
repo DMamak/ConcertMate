@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 
-import com.example.concertmate.Adapters.ViewPagerAdapter;
+import com.example.concertmate.Adapters.SingleViewPagerAdapter;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.R;
 import com.google.gson.Gson;
@@ -50,8 +50,8 @@ public class SingleEventFragment extends BaseFragment {
     }
 
     private void setupViewPager(ViewPager viewPager,boolean isFav) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-//        adapter.addFragment(new ConcertFragment(), "Concert");
+        SingleViewPagerAdapter adapter = new SingleViewPagerAdapter(getChildFragmentManager());
+        adapter.addFragment(new ConcertInformationFragment(), "Information");
 //        adapter.addFragment(new ConcertFragment(), "Favorite");
 //        if(isFav){
 //            adapter.addFragment(new ConcertFragment(),"Notes");
