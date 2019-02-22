@@ -21,7 +21,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        ConcertFragment fragment = new ConcertFragment();
+        Fragment fragment = mFragmentList.get(position);
         Bundle bundle = new Bundle();
         bundle.putInt("position",position);
         fragment.setArguments(bundle);
