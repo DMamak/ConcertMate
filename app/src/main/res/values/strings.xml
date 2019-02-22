@@ -23,4 +23,10 @@
     <string name="time">Time:</string>
     <string name="genre">Genre:</string>
     <string name="sub_genre">Sub-Genre</string>
+
+    <string name="venue_name">Venue:</string>
+    <string name="address">Address:</string>
+    <string name="postcode">PostCode:</string>
+    <string name="parking">Parking:</string>
+    <string name="accessible">Accessible:</string>
 </resources>

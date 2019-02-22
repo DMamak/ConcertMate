@@ -52,7 +52,7 @@ public class SingleEventFragment extends BaseFragment {
     private void setupViewPager(ViewPager viewPager,boolean isFav) {
         SingleViewPagerAdapter adapter = new SingleViewPagerAdapter(getChildFragmentManager());
         adapter.addFragment(new ConcertInformationFragment(), "Information");
-//        adapter.addFragment(new ConcertFragment(), "Favorite");
+        adapter.addFragment(new VenueInformationFragment(), "Venue");
 //        if(isFav){
 //            adapter.addFragment(new ConcertFragment(),"Notes");
 //        }

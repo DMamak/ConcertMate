@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.concertmate.Fragments.ConcertInformationFragment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,8 @@ public class SingleViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        ConcertInformationFragment fragment = new ConcertInformationFragment();
+        // ConcertInformationFragment fragment = new ConcertInformationFragment();
+       Fragment fragment = mFragmentList.get(position);
         Bundle bundle = new Bundle();
         bundle.putInt("position",position);
         fragment.setArguments(bundle);
