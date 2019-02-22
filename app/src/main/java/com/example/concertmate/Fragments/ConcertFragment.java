@@ -81,7 +81,7 @@ public class ConcertFragment extends BaseFragment {
                             .setQuery(query, Concert.class)
                             .build();
 
-            firebaseRecyclerAdapter = new FavoriteConcertAdapter(options);
+            firebaseRecyclerAdapter = new FavoriteConcertAdapter(options,getActivity());
             firebaseRecyclerAdapter.startListening();
 
             RecyclerView mRecycler = view.findViewById(R.id.recycler);

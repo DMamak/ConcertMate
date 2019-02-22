@@ -1,6 +1,9 @@
 package com.example.concertmate.Adapters;
 
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.concertmate.Adapters.FirebaseCustomAdapters.FirebaseRecyclerAdapter;
+import com.example.concertmate.Fragments.SingleEventFragment;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.R;
 import com.firebase.ui.common.ChangeEventType;
@@ -16,16 +20,24 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-public class FavoriteConcertAdapter extends FirebaseRecyclerAdapter<Concert, FavoriteConcertAdapter.ConcertViewHolder> {
+import static android.content.Context.MODE_PRIVATE;
 
+public class FavoriteConcertAdapter extends FirebaseRecyclerAdapter<Concert, FavoriteConcertAdapter.ConcertViewHolder> {
+    private FragmentActivity activity;
     private RecycleItemClick recycleItemClick;
     private DatabaseReference mDatabase;
     private static final String TAG = "PeopleListAdapter";
 
     public FavoriteConcertAdapter(FirebaseRecyclerOptions<Concert> options) {
         super(options, true);
+    }
+
+    public FavoriteConcertAdapter(FirebaseRecyclerOptions<Concert> options, FragmentActivity activity) {
+        super(options, true);
+        this.activity=activity;
     }
 
     public interface RecycleItemClick {
@@ -63,6 +75,23 @@ public class FavoriteConcertAdapter extends FirebaseRecyclerAdapter<Concert, Fav
                 }
             }
         });
+        holder.picture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences pref = v.getContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                Gson gson = new Gson();
+                String json = gson.toJson(concert);
+                editor.putString("concertObj", json);
+                editor.apply();
+                SingleEventFragment singleEventFragment = SingleEventFragment.newInstance();
+                activity.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.mainFragment, singleEventFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
     }
 
 
