@@ -112,14 +112,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="85dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="104dp"
         android:layout_marginBottom="636dp"
         android:maxLength="35"
         android:maxLines="1"
+        android:paddingTop="3dp"
         android:textAlignment="center"
         android:textColor="@color/contextColor"
         android:textSize="18sp"
-        android:paddingTop="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -163,7 +163,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/venue_parking"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:maxLength="170"/>
 
     <TextView
         android:id="@+id/venue_accessible"
@@ -201,6 +202,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/venue_accessible"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:maxLength="170"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.example.concertmate.Fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ public class VenueInformationFragment extends BaseFragment {
         postcode.setText(venue.getPostCode());
         parking.setText(venue.getParking());
         accessible.setText(venue.getAccessible());
-
+        Log.i("INFO",String.valueOf(venue.getAccessible().length()));
         return view;
     }
 }
