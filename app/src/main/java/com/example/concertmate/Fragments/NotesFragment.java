@@ -1,10 +1,8 @@
 package com.example.concertmate.Fragments;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,17 +24,23 @@ public class NotesFragment extends BaseFragment {
 
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.notes_list, container, false);
-        Log.i("INFO",getConcert().getName());
-
         notesListView = view.findViewById(R.id.notes_list_view);
         notesListView.setOnItemClickListener(new OnItemClickListener(){
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            //TODO add fragment to view and edit the notes
+                Bundle bundle = new Bundle();
+                bundle.putInt("positionOfNote",position);
+                goToEditNote(bundle);
             }
         });
-        CustomAdapter adapter = new CustomAdapter(getContext(), getConcert().getNotesArrayList());
+        notesListView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return false;
+            }
+        });
+        CustomAdapter adapter = new CustomAdapter(getContext(), getJsonConcert().getNotesArrayList());
         notesListView.setAdapter(adapter);
         return view;
     }

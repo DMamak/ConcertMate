@@ -7,6 +7,8 @@ public class Notes {
         this.notes = notes;
     }
 
+    public Notes(){}
+
     public String getNotes() {
         return notes;
     }
