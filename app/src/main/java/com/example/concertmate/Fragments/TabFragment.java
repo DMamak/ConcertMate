@@ -12,6 +12,7 @@ import com.example.concertmate.R;
 
 
 public class TabFragment extends BaseFragment {
+    int position =-1;
 
     public static TabFragment newInstance() {
         TabFragment fragment = new TabFragment();
@@ -19,12 +20,20 @@ public class TabFragment extends BaseFragment {
     }
 
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState){
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            position = bundle.getInt("position",0);
+        }
         View view = inflater.inflate(R.layout.tab_fragment,container,false);
         TabLayout tabLayout;
         ViewPager viewPager;
         viewPager =view.findViewById(R.id.viewpager);
         setupViewPager(viewPager);
         tabLayout =view.findViewById(R.id.tabs);
+        if(position != -1) {
+            tabLayout.setScrollPosition(position,0f,true);
+            viewPager.setCurrentItem(position);
+        }
         tabLayout.setupWithViewPager(viewPager);
         return view;
     }

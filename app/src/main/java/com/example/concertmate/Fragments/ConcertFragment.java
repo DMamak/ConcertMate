@@ -29,13 +29,18 @@ public class ConcertFragment extends BaseFragment {
     }
 
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState){
+        final Bundle bundle = this.getArguments();
+        int check = bundle.getInt("position");
+        final Bundle newBundle = new Bundle();
+        newBundle.putInt("position",check);
         final Calendar c = Calendar.getInstance();
         View view = inflater.inflate(R.layout.recycler_fragment,container,false);
         FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FilterFragment filterFragment = FilterFragment.newInstance(); //get a new Fragment instance
+                FilterFragment filterFragment = FilterFragment.newInstance();//get a new Fragment instance
+                filterFragment.setArguments(newBundle);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.mainFragment, filterFragment)
                         .addToBackStack(null)
@@ -43,8 +48,6 @@ public class ConcertFragment extends BaseFragment {
             }
         });
         final SearchView mySearch = view.findViewById(R.id.upcoming_search_view);
-        Bundle bundle = this.getArguments();
-        int check = bundle.getInt("position");
         if(check ==0) {
             adapter = new concertAdapterView(concertList,getActivity());
             RecyclerView mRecycler = view.findViewById(R.id.recycler);

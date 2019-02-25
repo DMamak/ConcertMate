@@ -28,6 +28,7 @@ public class FilterFragment extends BaseFragment {
     Button cancelButton, filterButton;
     TextView fromDate, toDate;
     String classificationName = "";
+    int myInt;
 
     public FilterFragment() {
     }
@@ -40,7 +41,12 @@ public class FilterFragment extends BaseFragment {
         final View view = inflater.inflate(R.layout.filter_fragment, container, false);
         final Calendar c = Calendar.getInstance();
         final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            myInt = bundle.getInt("position", 1);
+        }
+        final Bundle newBundle = new Bundle();
+        newBundle.putInt("position",myInt);
         fromDate = view.findViewById(R.id.fromDate);
         toDate = view.findViewById(R.id.toDate);
         alternative = view.findViewById(R.id.checkBoxAlternative);
@@ -62,6 +68,7 @@ public class FilterFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 TabFragment tabFragment = TabFragment.newInstance();
+                tabFragment.setArguments(newBundle);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.mainFragment, tabFragment)
                         .addToBackStack(null)
@@ -166,6 +173,7 @@ public class FilterFragment extends BaseFragment {
                     editor.putString("toDate", myFormat.format(getDateTimeAsDate(calendar, toDate.getText().toString())));
                     editor.apply();
                     TabFragment tabFragment = TabFragment.newInstance();
+                    tabFragment.setArguments(newBundle);
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.mainFragment, tabFragment)
                             .addToBackStack(null)
