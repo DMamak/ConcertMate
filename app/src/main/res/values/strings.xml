@@ -29,4 +29,8 @@
     <string name="postcode">PostCode:</string>
     <string name="parking">Parking:</string>
     <string name="accessible">Accessible:</string>
+    <string name="title_cancel">Cancel</string>
+    <string name="title_delete">Delete</string>
+    <string name="title_save">Save</string>
+    <string name="deleteNotesMulti">Delete</string>
 </resources>

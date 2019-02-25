@@ -2,6 +2,7 @@ package com.example.concertmate.Fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -21,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.text.SimpleDateFormat;
@@ -134,5 +136,36 @@ public class BaseFragment extends Fragment {
         mRequestQueue.add(jsonObjectRequest);
     }
 
+    public Concert getJsonConcert(){
+        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = pref.getString("concertObj", "");
+        return gson.fromJson(json, Concert.class);
+    }
 
+    public void saveJsonConcert(Concert concert){
+        SharedPreferences pref = getContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(concert);
+        editor.putString("concertObj", json);
+        editor.apply();
+    }
+
+    public void goToSingleEvent(){
+        SingleEventFragment singleEventFragment = SingleEventFragment.newInstance();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mainFragment, singleEventFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public void goToEditNote(Bundle bundle){
+        EditNotesFragment editNotesFragment = EditNotesFragment.newInstance();
+        editNotesFragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mainFragment, editNotesFragment)
+                .addToBackStack(null)
+                .commit();
+    }
 }
