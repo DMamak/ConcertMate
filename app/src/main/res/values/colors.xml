@@ -9,4 +9,5 @@
     <color name="black">#000000</color>
     <color name="heading">#797979</color>
     <color name="contextColor">#ACACAC</color>
+    <color name="colorMultiDelete">#b1c4d9</color>
 </resources>

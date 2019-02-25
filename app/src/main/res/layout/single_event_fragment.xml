@@ -55,6 +55,17 @@
             tools:layout_conversion_absoluteHeight="48dp"
             tools:layout_conversion_absoluteWidth="93dp" />
 
+        <Button
+            android:id="@+id/menu_item_delete_notes"
+            android:layout_width="39dp"
+            android:layout_height="27dp"
+            android:icon="@android:drawable/ic_menu_delete"
+            android:title="@string/deleteNotesMulti"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:showAsAction="ifRoom" />
+
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
