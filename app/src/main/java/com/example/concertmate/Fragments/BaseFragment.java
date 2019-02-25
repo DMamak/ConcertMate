@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.text.SimpleDateFormat;
@@ -134,5 +135,10 @@ public class BaseFragment extends Fragment {
         mRequestQueue.add(jsonObjectRequest);
     }
 
-
+    public Concert getConcert(){
+        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = pref.getString("concertObj", "");
+        return gson.fromJson(json, Concert.class);
+    }
 }

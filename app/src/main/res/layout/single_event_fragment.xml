@@ -31,6 +31,20 @@
             tools:layout_conversion_absoluteWidth="88dp" />
 
         <Button
+            android:id="@+id/add_notes_button"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="328dp"
+            android:layout_marginTop="4dp"
+            android:drawableStart="@drawable/add_notes_icon"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_conversion_absoluteHeight="48dp"
+            tools:layout_conversion_absoluteWidth="93dp" />
+        <Button
             android:id="@+id/return_button"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"

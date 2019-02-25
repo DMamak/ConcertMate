@@ -1,5 +1,7 @@
 package com.example.concertmate.Models;
 
+import java.util.ArrayList;
+
 public class Concert {
     private String Id;
     private String name;
@@ -13,6 +15,7 @@ public class Concert {
     private String twitterLink;
     private Venue venue;
     private boolean favorite;
+    private ArrayList<Notes> notesArrayList= new ArrayList<>();
 
     public Concert(String id,String name, String imageURL, String date, String time, String genre,String subGenre,Venue venue,boolean favorite,String youtube,String twitter,String facebook) {
         this.Id = id;
@@ -125,5 +128,13 @@ public class Concert {
 
     public void setFavorite(boolean favorite) {
         this.favorite = favorite;
+    }
+
+    public ArrayList<Notes> getNotesArrayList() {
+        return notesArrayList;
+    }
+
+    public void setNotesArrayList(ArrayList<Notes> notesArrayList) {
+        this.notesArrayList = notesArrayList;
     }
 }
