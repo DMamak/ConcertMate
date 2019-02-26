@@ -35,7 +35,7 @@
         android:layout_marginBottom="696dp"
         android:maxLength="35"
         android:maxLines="1"
-        android:textAlignment="viewStart"
+        android:textAlignment="center"
         android:textColor="@color/contextColor"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"

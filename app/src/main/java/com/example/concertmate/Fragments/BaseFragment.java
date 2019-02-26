@@ -3,10 +3,9 @@ package com.example.concertmate.Fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -17,18 +16,10 @@ import com.example.concertmate.Adapters.concertAdapterView;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.Models.Venue;
 import com.example.concertmate.R;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,6 +30,16 @@ public class BaseFragment extends Fragment {
     ArrayList<Concert> concertList = new ArrayList<>();
     String id, name, date, time, genre, venueName, postCode, address, longitude, latitude, phone, parking, access ,subGenre,youtube,twitter,facebook;
     String imageURL = "";
+    // list of fragments;
+    static ConcertFragment upcomingConcertFragment;
+    static ConcertFragment concertFragment;
+    static ConcertInformationFragment concertInformationFragment;
+    static EditNotesFragment editNotesFragment;
+    static FilterFragment filterFragment;
+    static NotesFragment notesFragment;
+    static SingleEventFragment singleEventFragment;
+    static TabFragment tabFragment;
+    static VenueInformationFragment venueInformationFragment;
 
     public void ticketmasterApiRequest(Context context, final concertAdapterView adapter, Calendar c, String s) {
         String test = "Music";
@@ -136,6 +137,17 @@ public class BaseFragment extends Fragment {
         mRequestQueue.add(jsonObjectRequest);
     }
 
+    public static void initializeFragments(){
+        upcomingConcertFragment= new ConcertFragment();
+        concertFragment = new ConcertFragment();
+        concertInformationFragment = new ConcertInformationFragment();
+        editNotesFragment = new EditNotesFragment();
+        filterFragment= new FilterFragment();
+        notesFragment = new NotesFragment();
+        singleEventFragment = new SingleEventFragment();
+        tabFragment = new TabFragment();
+        venueInformationFragment = new VenueInformationFragment();
+    }
     public Concert getJsonConcert(){
         SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         Gson gson = new Gson();
@@ -152,20 +164,75 @@ public class BaseFragment extends Fragment {
         editor.apply();
     }
 
-    public void goToSingleEvent(){
-        SingleEventFragment singleEventFragment = SingleEventFragment.newInstance();
-        getActivity().getSupportFragmentManager().beginTransaction()
+    public static void tabFragment(FragmentActivity activity){
+        activity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mainFragment, tabFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public static void concertFragment(FragmentActivity activity){
+        activity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mainFragment, upcomingConcertFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public static void UpcomingConcertFragment(FragmentActivity activity){
+        activity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mainFragment, concertFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public static void ConcertInformationFragment(FragmentActivity activity){
+        activity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mainFragment, concertInformationFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public static void editNotesFragment(FragmentActivity activity){
+        activity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mainFragment, editNotesFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public static void filterFragment(FragmentActivity activity){
+        activity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mainFragment, filterFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public static void notesFragment(FragmentActivity activity){
+        activity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mainFragment, notesFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public static void singleEventFragment(FragmentActivity activity){
+        activity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.mainFragment, singleEventFragment)
                 .addToBackStack(null)
                 .commit();
     }
 
+    public static void venueInformationFragment(FragmentActivity activity){
+        activity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mainFragment, venueInformationFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
     public void goToEditNote(Bundle bundle){
-        EditNotesFragment editNotesFragment = EditNotesFragment.newInstance();
         editNotesFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.mainFragment, editNotesFragment)
                 .addToBackStack(null)
                 .commit();
     }
+
 }

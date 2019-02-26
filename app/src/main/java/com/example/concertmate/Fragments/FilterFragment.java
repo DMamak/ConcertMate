@@ -69,10 +69,7 @@ public class FilterFragment extends BaseFragment {
             public void onClick(View v) {
                 TabFragment tabFragment = TabFragment.newInstance();
                 tabFragment.setArguments(newBundle);
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.mainFragment, tabFragment)
-                        .addToBackStack(null)
-                        .commit(); // add it to the current activity
+                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
 

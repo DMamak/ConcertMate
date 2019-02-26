@@ -1,7 +1,6 @@
 package com.example.concertmate.Fragments;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,15 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.example.concertmate.Fragments.BaseFragment;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.R;
-import com.google.gson.Gson;
-
 import org.apache.commons.lang3.StringUtils;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class ConcertInformationFragment extends BaseFragment {
 

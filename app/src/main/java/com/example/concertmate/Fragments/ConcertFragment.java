@@ -42,11 +42,12 @@ public class ConcertFragment extends BaseFragment {
                 FilterFragment filterFragment = FilterFragment.newInstance();//get a new Fragment instance
                 filterFragment.setArguments(newBundle);
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.mainFragment, filterFragment)
-                        .addToBackStack(null)
+                        .add(R.id.mainFragment, filterFragment)
+                        .addToBackStack("concertFrag")
                         .commit();
             }
         });
+
         final SearchView mySearch = view.findViewById(R.id.upcoming_search_view);
         if(check ==0) {
             adapter = new concertAdapterView(concertList,getActivity());
