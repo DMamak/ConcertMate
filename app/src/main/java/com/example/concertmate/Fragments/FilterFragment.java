@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.concertmate.R;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
@@ -151,6 +152,9 @@ public class FilterFragment extends BaseFragment {
                 }
                 if (tribute != null && tribute.isChecked()) {
                     classificationName = classificationName.concat("tribute,");
+                }
+                if(!StringUtils.isNotBlank(classificationName)){
+                    classificationName="Music";
                 }
                 DateTime fromDateTime = getDateTimeAsDate(fromDate.getText().toString()).withTimeAtStartOfDay();
                 DateTime toDateTime = getDateTimeAsDate(toDate.getText().toString()).plusDays(1).withTimeAtStartOfDay();

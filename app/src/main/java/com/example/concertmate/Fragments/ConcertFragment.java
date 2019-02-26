@@ -138,7 +138,6 @@ public class ConcertFragment extends BaseFragment {
 
     public void ticketmasterApiRequest(String s, final ProgressBar pDialog) {
         pDialog.setVisibility(View.VISIBLE);
-        String test = "Music";
         s = s.trim();
         s = s.replaceAll("\\s", "%20");
 
@@ -148,14 +147,14 @@ public class ConcertFragment extends BaseFragment {
         StringBuilder url = new StringBuilder();
 
         url.append("https://app.ticketmaster.com/discovery/v2/events.json?&apikey=").append(getString(R.string.ticketmasterAPI))
-                .append("&countryCode=IE").append("&size=200").append("&classificationName=").append(pref.getString("class", test));
+                .append("&countryCode=IE").append("&size=200").append("&classificationName=").append(pref.getString("class", "Music"));
 
         if (StringUtils.isNotBlank(s)) {
             concertList.clear();
             url.append("&keyword=").append(s);
         } else {
             concertList.clear();
-            url.append("&startDateTime=").append(pref.getString("fromDate", sdf.format(DateTime.now().toDate())));
+            url.append("&startDateTime=").append(pref.getString("fromDate", sdf.format(DateTime.now().withTimeAtStartOfDay().toDate())));
             url.append("&endDateTime=").append(pref.getString("toDate", sdf.format(DateTime.now().plusDays(1).plusMonths(3).withTimeAtStartOfDay().toDate())));
         }
         url.append("&sort=").append("date,asc");
