@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/backgroundColorWithGrayText"
     android:layout_height="match_parent">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/appBarLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@color/blueish"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:layout_constraintBottom_toBottomOf="@+id/single_like_icon"
         app:layout_constraintTop_toBottomOf="@+id/single_like_icon">
@@ -94,7 +95,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
             android:layout_marginBottom="412dp"
-            android:background="@color/blueish"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

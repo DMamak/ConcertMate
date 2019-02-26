@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import com.example.concertmate.Fragments.BaseFragment;
 import com.firebase.ui.common.ChangeEventType;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.ObservableSnapshotArray;
@@ -76,64 +77,61 @@ public abstract class FirebaseRecyclerAdapter<T, VH extends RecyclerView.ViewHol
                                DataSnapshot snapshot,
                                int newIndex,
                                int oldIndex) {
-        T model = mSnapshots.get(newIndex);
-        onChildUpdate(model, type, snapshot, newIndex, oldIndex);
+        if(list.size() >0){
+            list.clear();
+        }
+        if(backupList.size() >0){
+            backupList.clear();
+        }
+        list.addAll(mSnapshots);
+        if(isFiltarable){
+            backupList.addAll(mSnapshots);
+        }
+        onChildUpdate(type, snapshot, newIndex, oldIndex);
     }
 
-    protected void onChildUpdate(T model, ChangeEventType type,
+    protected void onChildUpdate(ChangeEventType type,
                                  DataSnapshot snapshot,
                                  int newIndex,
                                  int oldIndex) {
-        // TODO FIX THIS SHITE !!!!!!!!!!!!!!!!!!! Wrong Indexes !!!!! Fuck this shite !
 
         switch (type) {
             case ADDED:
-                addItem(snapshot.getKey(), model);
-                notifyItemInserted(newIndex);
                 notifyDataSetChanged();
                 break;
             case CHANGED:
-                addItem(snapshot.getKey(), model, newIndex);
-                notifyItemChanged(newIndex);
                 notifyDataSetChanged();
                 break;
             case REMOVED:
-                removeItem(newIndex);
-                notifyItemRemoved(newIndex);
                 notifyDataSetChanged();
                 break;
             case MOVED:
-                moveItem(snapshot.getKey(), model, newIndex, oldIndex);
-                notifyItemMoved(oldIndex, newIndex);
                 notifyDataSetChanged();
                 break;
             default:
                 throw new IllegalStateException("Incomplete case statement");
         }
     }
+    private void addItem(String key, T t, int newIndex) {
+        if(list.size() > 0){
+            list.clear();
+        }
+        list.add(t);
+    }
 
     private void moveItem(String key, T t, int newIndex, int oldIndex) {
-        list.remove(oldIndex);
-        list.add(newIndex, t);
+        list.remove(t);
+        list.add(t);
         if (isFiltarable) {
-            backupList.remove(oldIndex);
-            backupList.add(newIndex, t);
+            backupList.remove(t);
+            backupList.add(t);
         }
     }
 
-    private void removeItem(int newIndex) {
-        list.remove(newIndex);
+    private void removeItem(T t) {
+        list.remove(t);
         if (isFiltarable)
-            backupList.remove(newIndex);
-    }
-
-    private void addItem(String key, T t, int newIndex) {
-        list.remove(newIndex);
-        list.add(newIndex, t);
-        if (isFiltarable) {
-            backupList.remove(newIndex);
-            backupList.add(newIndex, t);
-        }
+            backupList.remove(t);
     }
 
     private void addItem(String id, T t) {

@@ -15,6 +15,8 @@ import com.example.concertmate.Adapters.ViewPagerAdapter;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.R;
 import com.example.concertmate.Utils.TinyDB;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import static android.view.View.VISIBLE;
 
@@ -22,12 +24,15 @@ public class SingleEventFragment extends BaseFragment {
     CheckBox isFav;
     ImageView bandImage;
     Button notesButton,returnButton;
+    Concert concert;
+    DatabaseReference mDatabase;
 
     public SingleEventFragment(){}
 
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState){
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         View view = inflater.inflate(R.layout.single_event_fragment,container,false);
-        Concert concert = getJsonConcert(getContext());
+         concert = getJsonConcert(getContext());
 
         isFav = view.findViewById(R.id.single_like_icon);
         notesButton=view.findViewById(R.id.add_notes_button);
@@ -36,6 +41,18 @@ public class SingleEventFragment extends BaseFragment {
         if(concert.isFavorite()){
             notesButton.setVisibility(VISIBLE);
         }
+        isFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isFav.isChecked()) {
+                    concert.setFavorite(true);
+                    mDatabase.child("concert").child(concert.getId()).setValue(concert);
+                } else {
+                    concert.setFavorite(false);
+                    mDatabase.child("concert").child(concert.getId()).removeValue();
+                }
+            }
+        });
         notesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

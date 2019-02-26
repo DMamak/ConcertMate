@@ -11,6 +11,7 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        BaseFragment baseFragment = new BaseFragment();
         super.onCreate(savedInstanceState);
         Calendar c = Calendar.getInstance();
         SharedPreferences pref =getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
@@ -19,8 +20,8 @@ public class BaseActivity extends AppCompatActivity {
         editor.apply();
 
         setContentView(R.layout.activity_base);
-        BaseFragment.initializeFragments();
-        BaseFragment.tabFragment(this);
+        baseFragment.initializeFragments();
+        baseFragment.tabFragment(this);
     }
 
 }

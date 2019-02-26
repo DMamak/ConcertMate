@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +18,6 @@ import com.example.concertmate.R;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import org.apache.commons.lang3.StringUtils;
 
 public class ConcertFragment extends BaseFragment {
     concertAdapterView adapter;
@@ -57,10 +58,8 @@ public class ConcertFragment extends BaseFragment {
 
                 @Override
                 public boolean onQueryTextChange(String s) {
-                    //TODO clearFocus does not work as intented, waiting fot answer from stackOverflow,
-                   if(!StringUtils.isNotBlank(s)){
+                   if(TextUtils.isEmpty(s)){
                        ticketmasterApiRequest(getActivity().getApplicationContext(), adapter,"");
-                       mySearch.clearFocus();
                    }
                     return false;
                 }
@@ -78,7 +77,7 @@ public class ConcertFragment extends BaseFragment {
 
             firebaseRecyclerAdapter = new FavoriteConcertAdapter(options,getActivity());
             firebaseRecyclerAdapter.startListening();
-
+            Log.i("INFO",String.valueOf(concertList.size()));
             RecyclerView mRecycler = view.findViewById(R.id.recycler);
             mRecycler.setAdapter(firebaseRecyclerAdapter);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -100,5 +99,4 @@ public class ConcertFragment extends BaseFragment {
 
         return view;
     }
-
 }
