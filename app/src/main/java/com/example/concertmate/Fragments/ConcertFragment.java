@@ -40,6 +40,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class ConcertFragment extends BaseFragment {
     concertAdapterView adapter;
+    FloatingActionButton fab;
     FavoriteConcertAdapter firebaseRecyclerAdapter;
     ProgressBar pDialog;
     TextView noResults;
@@ -62,16 +63,15 @@ public class ConcertFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.recycler_fragment, container, false);
         pDialog = view.findViewById(R.id.progressBar);
         noResults = view.findViewById(R.id.textView3);
-        FloatingActionButton fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                filterFragment(getActivity(),check);
-            }
-        });
-
+        fab = view.findViewById(R.id.fab);
         final SearchView mySearch = view.findViewById(R.id.upcoming_search_view);
         if (check == 0) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    filterFragment(getActivity(),check);
+                }
+            });
             adapter = new concertAdapterView(concertList, getActivity());
             RecyclerView mRecycler = view.findViewById(R.id.recycler);
             mRecycler.setAdapter(adapter);
@@ -99,6 +99,7 @@ public class ConcertFragment extends BaseFragment {
 
 
         } else {
+            fab.hide();
             pDialog.setVisibility(View.GONE);
             noResults.setVisibility(View.GONE);
             final Query query;

@@ -8,7 +8,6 @@ import android.util.Log;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-import com.example.concertmate.Fragments.BaseFragment;
 import com.firebase.ui.common.ChangeEventType;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.ObservableSnapshotArray;
