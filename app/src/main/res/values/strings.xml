@@ -33,4 +33,5 @@
     <string name="title_delete">Delete</string>
     <string name="title_save">Save</string>
     <string name="deleteNotesMulti">Delete</string>
+    <string name="no_results">No results found, please change filter information.</string>
 </resources>

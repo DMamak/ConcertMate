@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.Models.Notes;
 import com.example.concertmate.R;
-import com.example.concertmate.Utils.TinyDB;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -30,14 +29,15 @@ public class NotesFragment extends BaseFragment {
     private DatabaseReference mDatabase;
     ListView notesListView;
 
-    public NotesFragment(){}
+    public NotesFragment() {
+    }
 
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.notes_list, container, false);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         notesListView = view.findViewById(R.id.notes_list_view);
-        final  CustomAdapter adapter = new CustomAdapter(getContext(), getJsonConcert(getContext()).getNotesArrayList());
-        notesListView.setOnItemClickListener(new OnItemClickListener(){
+        final CustomAdapter adapter = new CustomAdapter(getContext(), getJsonConcert(getContext()).getNotesArrayList());
+        notesListView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -67,8 +67,7 @@ public class NotesFragment extends BaseFragment {
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                switch (item.getItemId())
-                {
+                switch (item.getItemId()) {
                     case R.id.menu_item_delete_notes:
                         deleteNotes(mode);
                         return true;
@@ -77,13 +76,10 @@ public class NotesFragment extends BaseFragment {
                 }
             }
 
-            private void deleteNotes(ActionMode actionMode)
-            {
+            private void deleteNotes(ActionMode actionMode) {
                 Concert concert = getJsonConcert(getContext());
-                for (int i = adapter.getCount() - 1; i >= 0; i--)
-                {
-                    if (notesListView.isItemChecked(i))
-                    {
+                for (int i = adapter.getCount() - 1; i >= 0; i--) {
+                    if (notesListView.isItemChecked(i)) {
                         concert.getNotesArrayList().remove(i);
                         mDatabase.child("concert").child(concert.getId()).setValue(concert);
                         adapter.getData().remove(i);
@@ -129,16 +125,16 @@ public class NotesFragment extends BaseFragment {
         public View getView(int position, View view, ViewGroup parent) {
             View vi = view;
             if (view == null)
-                vi = inflater.inflate(R.layout.custom_listview,parent,false);
+                vi = inflater.inflate(R.layout.custom_listview, parent, false);
 
-            TextView title =vi.findViewById(R.id.notesTextView);
+            TextView title = vi.findViewById(R.id.notesTextView);
 
             Notes c = data.get(position);
             title.setText(c.getNotes());
             return vi;
         }
 
-        public ArrayList<Notes> getData(){
+        public ArrayList<Notes> getData() {
             return data;
         }
 

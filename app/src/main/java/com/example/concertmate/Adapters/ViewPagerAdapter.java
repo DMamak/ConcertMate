@@ -23,7 +23,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         Fragment fragment = mFragmentList.get(position);
         Bundle bundle = new Bundle();
-        bundle.putInt("position",position);
+        bundle.putInt("position", position);
         fragment.setArguments(bundle);
         return fragment;
     }

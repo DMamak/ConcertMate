@@ -77,14 +77,14 @@ public abstract class FirebaseRecyclerAdapter<T, VH extends RecyclerView.ViewHol
                                DataSnapshot snapshot,
                                int newIndex,
                                int oldIndex) {
-        if(list.size() >0){
+        if (list.size() > 0) {
             list.clear();
         }
-        if(backupList.size() >0){
+        if (backupList.size() > 0) {
             backupList.clear();
         }
         list.addAll(mSnapshots);
-        if(isFiltarable){
+        if (isFiltarable) {
             backupList.addAll(mSnapshots);
         }
         onChildUpdate(type, snapshot, newIndex, oldIndex);
@@ -111,33 +111,6 @@ public abstract class FirebaseRecyclerAdapter<T, VH extends RecyclerView.ViewHol
             default:
                 throw new IllegalStateException("Incomplete case statement");
         }
-    }
-    private void addItem(String key, T t, int newIndex) {
-        if(list.size() > 0){
-            list.clear();
-        }
-        list.add(t);
-    }
-
-    private void moveItem(String key, T t, int newIndex, int oldIndex) {
-        list.remove(t);
-        list.add(t);
-        if (isFiltarable) {
-            backupList.remove(t);
-            backupList.add(t);
-        }
-    }
-
-    private void removeItem(T t) {
-        list.remove(t);
-        if (isFiltarable)
-            backupList.remove(t);
-    }
-
-    private void addItem(String id, T t) {
-        list.add(t);
-        if (isFiltarable)
-            backupList.add(t);
     }
 
     @Override

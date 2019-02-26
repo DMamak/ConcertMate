@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.example.concertmate.Fragments.BaseFragment;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.R;
@@ -19,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.myViewHolder> {
@@ -29,7 +31,7 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
 
     public concertAdapterView(List<Concert> concertList, FragmentActivity activity) {
         this.concertList = concertList;
-        this.activity=activity;
+        this.activity = activity;
 
     }
 
@@ -86,7 +88,7 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
             @Override
             public void onClick(View v) {
                 TinyDB tinydb = new TinyDB(activity);
-                tinydb.putObject("concertObj",concert);
+                tinydb.putObject("concertObj", concert);
                 BaseFragment.singleEventFragment(activity);
             }
         });

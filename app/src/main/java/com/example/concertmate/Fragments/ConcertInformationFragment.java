@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.R;
+
 import org.apache.commons.lang3.StringUtils;
 
 public class ConcertInformationFragment extends BaseFragment {
@@ -22,7 +24,7 @@ public class ConcertInformationFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_concert_information, container, false);
+        View view = inflater.inflate(R.layout.fragment_concert_information, container, false);
         final Concert concert = getJsonConcert(getContext());
         TextView name = view.findViewById(R.id.single_concert_name);
         TextView date = view.findViewById(R.id.single_concert_date);
@@ -38,13 +40,13 @@ public class ConcertInformationFragment extends BaseFragment {
         genre.setText(concert.getGenre());
         subGenre.setText(concert.getSubGenre());
 
-        if(!StringUtils.isNotBlank(concert.getYoutubeLink())){
+        if (!StringUtils.isNotBlank(concert.getYoutubeLink())) {
             youtube.setVisibility(View.INVISIBLE);
         }
-        if(!StringUtils.isNotBlank(concert.getFacebookLink())){
+        if (!StringUtils.isNotBlank(concert.getFacebookLink())) {
             facebook.setVisibility(View.INVISIBLE);
         }
-        if(!StringUtils.isNotBlank(concert.getTwitterLink())){
+        if (!StringUtils.isNotBlank(concert.getTwitterLink())) {
             twitter.setVisibility(View.INVISIBLE);
         }
         youtube.setOnClickListener(new View.OnClickListener() {

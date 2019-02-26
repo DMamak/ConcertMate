@@ -15,24 +15,25 @@ public class Concert {
     private String twitterLink;
     private Venue venue;
     private boolean favorite;
-    private ArrayList<Notes> notesArrayList= new ArrayList<>();
+    private ArrayList<Notes> notesArrayList = new ArrayList<>();
 
-    public Concert(String id,String name, String imageURL, String date, String time, String genre,String subGenre,Venue venue,boolean favorite,String youtube,String twitter,String facebook) {
+    public Concert(String id, String name, String imageURL, String date, String time, String genre, String subGenre, Venue venue, boolean favorite, String youtube, String twitter, String facebook) {
         this.Id = id;
         this.name = name;
         this.imageURL = imageURL;
         this.date = date;
         this.time = time;
         this.genre = genre;
-        this.subGenre =subGenre;
+        this.subGenre = subGenre;
         this.venue = venue;
-        this.favorite=favorite;
-        this.youtubeLink=youtube;
-        this.twitterLink=twitter;
-        this.facebookLink=facebook;
+        this.favorite = favorite;
+        this.youtubeLink = youtube;
+        this.twitterLink = twitter;
+        this.facebookLink = facebook;
     }
 
-    public Concert(){}
+    public Concert() {
+    }
 
     public String getYoutubeLink() {
         return youtubeLink;

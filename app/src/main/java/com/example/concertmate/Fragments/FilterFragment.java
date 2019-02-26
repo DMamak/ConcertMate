@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.concertmate.R;
-import com.example.concertmate.Utils.TinyDB;
 
 import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -49,7 +46,7 @@ public class FilterFragment extends BaseFragment {
             myInt = bundle.getInt("position", 1);
         }
         final Bundle newBundle = new Bundle();
-        newBundle.putInt("position",myInt);
+        newBundle.putInt("position", myInt);
         fromDate = view.findViewById(R.id.fromDate);
         toDate = view.findViewById(R.id.toDate);
         alternative = view.findViewById(R.id.checkBoxAlternative);
@@ -160,7 +157,7 @@ public class FilterFragment extends BaseFragment {
                     classificationName = classificationName.concat("tribute,");
                 }
                 DateTime fromDateTime = getDateTimeAsDate(fromDate.getText().toString()).withTimeAtStartOfDay();
-                DateTime toDateTime =getDateTimeAsDate(toDate.getText().toString()).plusDays(1).withTimeAtStartOfDay();
+                DateTime toDateTime = getDateTimeAsDate(toDate.getText().toString()).plusDays(1).withTimeAtStartOfDay();
                 if (fromDateTime.getMillis() > toDateTime.getMillis()) {
 
                     Toast.makeText(getContext(), "From Date is after To Date", Toast.LENGTH_LONG).show();
@@ -172,7 +169,7 @@ public class FilterFragment extends BaseFragment {
                     editor.putString("class", classificationName);
 
 
-                    editor.putString("fromDate",sdf.format(fromDateTime.toDate()));
+                    editor.putString("fromDate", sdf.format(fromDateTime.toDate()));
                     editor.putString("toDate", sdf.format(toDateTime.toDate()));
                     editor.apply();
                     getActivity().getSupportFragmentManager().popBackStack();
@@ -197,6 +194,6 @@ public class FilterFragment extends BaseFragment {
         int month = Integer.parseInt(sourceSplit[1]);
         int year = Integer.parseInt(sourceSplit[2]);
 
-        return new DateTime(year,month,day,0,0);
+        return new DateTime(year, month, day, 0, 0);
     }
 }

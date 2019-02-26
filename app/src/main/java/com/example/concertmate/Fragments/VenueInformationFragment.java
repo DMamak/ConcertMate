@@ -1,23 +1,19 @@
 package com.example.concertmate.Fragments;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.concertmate.Models.Concert;
 import com.example.concertmate.Models.Venue;
 import com.example.concertmate.R;
-import com.google.gson.Gson;
 
-import static android.content.Context.MODE_PRIVATE;
 
 public class VenueInformationFragment extends BaseFragment {
 
-    public VenueInformationFragment(){}
+    public VenueInformationFragment() {
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -35,7 +31,6 @@ public class VenueInformationFragment extends BaseFragment {
         postcode.setText(venue.getPostCode());
         parking.setText(venue.getParking());
         accessible.setText(venue.getAccessible());
-        Log.i("INFO",String.valueOf(venue.getAccessible().length()));
         return view;
     }
 }
