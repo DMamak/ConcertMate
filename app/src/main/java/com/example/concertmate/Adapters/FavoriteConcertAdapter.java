@@ -12,9 +12,11 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.concertmate.Adapters.FirebaseCustomAdapters.FirebaseRecyclerAdapter;
+import com.example.concertmate.Fragments.BaseFragment;
 import com.example.concertmate.Fragments.SingleEventFragment;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.R;
+import com.example.concertmate.Utils.TinyDB;
 import com.firebase.ui.common.ChangeEventType;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -78,17 +80,9 @@ public class FavoriteConcertAdapter extends FirebaseRecyclerAdapter<Concert, Fav
         holder.picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences pref = v.getContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                Gson gson = new Gson();
-                String json = gson.toJson(concert);
-                editor.putString("concertObj", json);
-                editor.apply();
-                SingleEventFragment singleEventFragment = SingleEventFragment.newInstance();
-                activity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.mainFragment, singleEventFragment)
-                        .addToBackStack(null)
-                        .commit();
+                TinyDB tinydb = new TinyDB(activity);
+                tinydb.putObject("concertObj",concert);
+                BaseFragment.singleEventFragment(activity);
             }
         });
 

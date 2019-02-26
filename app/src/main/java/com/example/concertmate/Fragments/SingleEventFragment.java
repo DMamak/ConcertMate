@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.example.concertmate.Adapters.ViewPagerAdapter;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.R;
+import com.example.concertmate.Utils.TinyDB;
 import com.squareup.picasso.Picasso;
 import static android.view.View.VISIBLE;
 
@@ -24,14 +25,10 @@ public class SingleEventFragment extends BaseFragment {
 
     public SingleEventFragment(){}
 
-    public static SingleEventFragment newInstance() {
-
-        return  new SingleEventFragment();
-    }
-
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.single_event_fragment,container,false);
-        Concert concert = getJsonConcert();
+        Concert concert = getJsonConcert(getContext());
+
         isFav = view.findViewById(R.id.single_like_icon);
         notesButton=view.findViewById(R.id.add_notes_button);
         returnButton=view.findViewById(R.id.return_button);
@@ -42,7 +39,7 @@ public class SingleEventFragment extends BaseFragment {
         notesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editNotesFragment(getActivity());
+                goToEditNote(-1);
             }
         });
         returnButton.setOnClickListener(new View.OnClickListener() {

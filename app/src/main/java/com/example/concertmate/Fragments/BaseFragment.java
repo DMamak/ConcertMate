@@ -36,7 +36,6 @@ public class BaseFragment extends Fragment {
     static ConcertFragment upcomingConcertFragment;
     static ConcertFragment concertFragment;
     static ConcertInformationFragment concertInformationFragment;
-    static EditNotesFragment editNotesFragment;
     static FilterFragment filterFragment;
     static NotesFragment notesFragment;
     static SingleEventFragment singleEventFragment;
@@ -143,15 +142,14 @@ public class BaseFragment extends Fragment {
         upcomingConcertFragment= new ConcertFragment();
         concertFragment = new ConcertFragment();
         concertInformationFragment = new ConcertInformationFragment();
-        editNotesFragment = new EditNotesFragment();
         filterFragment= new FilterFragment();
         notesFragment = new NotesFragment();
         singleEventFragment = new SingleEventFragment();
         tabFragment = new TabFragment();
         venueInformationFragment = new VenueInformationFragment();
     }
-    public Concert getJsonConcert(){
-        TinyDB tinydb = new TinyDB(getContext());
+    public Concert getJsonConcert(Context context){
+        TinyDB tinydb = new TinyDB(context);
         return   tinydb.getObject("concertObj",Concert.class);
     }
 
@@ -159,6 +157,11 @@ public class BaseFragment extends Fragment {
         TinyDB tinydb = new TinyDB(getContext());
         tinydb.putObject("concertObj",concert);
 
+    }
+
+    public int getPosition(Context context){
+        TinyDB tinydb = new TinyDB(context);
+        return   tinydb.getInt("positionOfNote");
     }
 
     public static void tabFragment(FragmentActivity activity){
@@ -185,13 +188,6 @@ public class BaseFragment extends Fragment {
     public static void ConcertInformationFragment(FragmentActivity activity){
         activity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.mainFragment, concertInformationFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    public static void editNotesFragment(FragmentActivity activity){
-        activity.getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mainFragment, editNotesFragment)
                 .addToBackStack(null)
                 .commit();
     }
@@ -224,7 +220,10 @@ public class BaseFragment extends Fragment {
                 .commit();
     }
 
-    public void goToEditNote(Bundle bundle){
+    public void goToEditNote(int position){
+        Bundle bundle = new Bundle();
+        bundle.putInt("positionOfNote",position);
+        EditNotesFragment editNotesFragment = new EditNotesFragment();
         editNotesFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.mainFragment, editNotesFragment)

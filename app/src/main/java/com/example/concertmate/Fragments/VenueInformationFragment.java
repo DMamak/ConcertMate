@@ -28,11 +28,7 @@ public class VenueInformationFragment extends BaseFragment {
         TextView postcode = view.findViewById(R.id.single_venue_postcode);
         TextView parking = view.findViewById(R.id.single_venue_parking);
         TextView accessible = view.findViewById(R.id.single_venue_accessible);
-        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = pref.getString("concertObj", "");
-        final Concert concert = gson.fromJson(json, Concert.class);
-        Venue venue = concert.getVenue();
+        Venue venue = getJsonConcert(getContext()).getVenue();
 
         venueName.setText(venue.getVenueName());
         address.setText(venue.getAddress());

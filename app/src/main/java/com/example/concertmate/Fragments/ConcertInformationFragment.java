@@ -23,7 +23,7 @@ public class ConcertInformationFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_concert_information, container, false);
-        final Concert concert = getJsonConcert();
+        final Concert concert = getJsonConcert(getContext());
         TextView name = view.findViewById(R.id.single_concert_name);
         TextView date = view.findViewById(R.id.single_concert_date);
         TextView time = view.findViewById(R.id.single_concert_time);

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.Models.Notes;
 import com.example.concertmate.R;
+import com.example.concertmate.Utils.TinyDB;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -35,14 +36,12 @@ public class NotesFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.notes_list, container, false);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         notesListView = view.findViewById(R.id.notes_list_view);
-        final  CustomAdapter adapter = new CustomAdapter(getContext(), getJsonConcert().getNotesArrayList());
+        final  CustomAdapter adapter = new CustomAdapter(getContext(), getJsonConcert(getContext()).getNotesArrayList());
         notesListView.setOnItemClickListener(new OnItemClickListener(){
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bundle bundle = new Bundle();
-                bundle.putInt("positionOfNote",position);
-                goToEditNote(bundle);
+                goToEditNote(position);
             }
         });
 
@@ -80,7 +79,7 @@ public class NotesFragment extends BaseFragment {
 
             private void deleteNotes(ActionMode actionMode)
             {
-                Concert concert = getJsonConcert();
+                Concert concert = getJsonConcert(getContext());
                 for (int i = adapter.getCount() - 1; i >= 0; i--)
                 {
                     if (notesListView.isItemChecked(i))

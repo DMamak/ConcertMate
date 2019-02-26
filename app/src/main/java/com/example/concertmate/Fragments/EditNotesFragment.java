@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class EditNotesFragment extends BaseFragment {
     private DatabaseReference mDatabase;
-
+    int index = -1;
     public EditNotesFragment(){}
 
     public static EditNotesFragment newInstance() {
@@ -27,8 +27,8 @@ public class EditNotesFragment extends BaseFragment {
 
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        final Concert concert = getJsonConcert();
-        int index = -1;
+        final Concert concert = getJsonConcert(getContext());
+
         Bundle bundle = this.getArguments();
         if(bundle!=null){
             index = getArguments().getInt("positionOfNote");
@@ -54,7 +54,12 @@ public class EditNotesFragment extends BaseFragment {
                         return true;
                     case R.id.navigation_save:
                         ArrayList<Notes> notes = concert.getNotesArrayList();
-                        notes.add(new Notes(txt.getText().toString()));
+                        if(index != -1){
+                            notes.get(index).setNotes(txt.getText().toString());
+                        }else{
+                            notes.add(new Notes(txt.getText().toString()));
+                        }
+
                         concert.setNotesArrayList(notes);
                         mDatabase.child("concert").child(concert.getId()).setValue(concert);
                         saveJsonConcert(concert);
