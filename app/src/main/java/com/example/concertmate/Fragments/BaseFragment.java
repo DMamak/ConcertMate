@@ -41,11 +41,11 @@ public class BaseFragment extends Fragment {
         return new ConcertInformationFragment();
     }
 
-    public static void filterFragment(FragmentActivity activity) {
+    public static void filterFragment(FragmentActivity activity,int check) {
         FilterFragment filterFragment = new FilterFragment();
         activity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.mainFragment, filterFragment)
-                .addToBackStack(null)
+                .addToBackStack(String.valueOf(check))
                 .commit();
     }
 

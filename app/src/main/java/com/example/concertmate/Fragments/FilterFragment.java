@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +33,6 @@ public class FilterFragment extends BaseFragment {
     int myInt;
 
     public FilterFragment() {
-    }
-
-    public static FilterFragment newInstance() {
-        return new FilterFragment();
     }
 
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, final Bundle savedInstanceState) {
@@ -163,15 +161,26 @@ public class FilterFragment extends BaseFragment {
                     Toast.makeText(getContext(), "From Date is after To Date", Toast.LENGTH_LONG).show();
 
                 } else {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                    SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.putString("class", classificationName);
+                    int index = getActivity().getSupportFragmentManager().getBackStackEntryCount() - 1;
+                    FragmentManager.BackStackEntry backEntry = getFragmentManager().getBackStackEntryAt(index);
+                    String tag = backEntry.getName();
+                   if(Integer.valueOf(tag) ==0) {
+                       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                       SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                       SharedPreferences.Editor editor = pref.edit();
+                       editor.putString("class", classificationName);
 
 
-                    editor.putString("fromDate", sdf.format(fromDateTime.toDate()));
-                    editor.putString("toDate", sdf.format(toDateTime.toDate()));
-                    editor.apply();
+                       editor.putString("fromDate", sdf.format(fromDateTime.toDate()));
+                       editor.putString("toDate", sdf.format(toDateTime.toDate()));
+                       editor.apply();
+                   }else{
+                       // TODO FILTER THE FIREBASE SOMEHOW AGAIN xD
+                       // prolly make more filter options in the firebase adapter.
+                       // then save it in shared pref and filter it.
+                       // remeber to clear it otherwise it will mess up !
+                       // # Effort
+                   }
                     getActivity().getSupportFragmentManager().popBackStack();
                 }
             }

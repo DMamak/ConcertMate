@@ -43,6 +43,7 @@ public class ConcertFragment extends BaseFragment {
     FavoriteConcertAdapter firebaseRecyclerAdapter;
     ProgressBar pDialog;
     TextView noResults;
+    int check;
     //API
     String id, name, date, time, genre, venueName, postCode, address, longitude, latitude, phone, parking, access, subGenre, youtube, twitter, facebook;
     String imageURL = "";
@@ -55,7 +56,7 @@ public class ConcertFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
         mRequestQueue = Volley.newRequestQueue(getContext());
         final Bundle bundle = this.getArguments();
-        int check = bundle.getInt("position");
+        check = bundle.getInt("position");
         final Bundle newBundle = new Bundle();
         newBundle.putInt("position", check);
         View view = inflater.inflate(R.layout.recycler_fragment, container, false);
@@ -65,7 +66,7 @@ public class ConcertFragment extends BaseFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                filterFragment(getActivity());
+                filterFragment(getActivity(),check);
             }
         });
 
