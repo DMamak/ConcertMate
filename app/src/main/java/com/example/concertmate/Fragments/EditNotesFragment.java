@@ -21,9 +21,6 @@ public class EditNotesFragment extends BaseFragment {
     int index = -1;
     public EditNotesFragment(){}
 
-    public static EditNotesFragment newInstance() {
-        return new EditNotesFragment();
-    }
 
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
         mDatabase = FirebaseDatabase.getInstance().getReference();

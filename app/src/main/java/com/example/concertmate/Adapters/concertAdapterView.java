@@ -1,6 +1,5 @@
 package com.example.concertmate.Adapters;
 
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
@@ -10,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.concertmate.Fragments.BaseFragment;
-import com.example.concertmate.Fragments.SingleEventFragment;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.R;
 import com.example.concertmate.Utils.TinyDB;
@@ -21,12 +18,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.myViewHolder> {
     public List<Concert> concertList;
@@ -51,7 +44,7 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
     @Override
     public void onBindViewHolder(@NonNull myViewHolder viewHolder, int i) {
         final CheckBox box = viewHolder.box;
-        final Concert concert = (Concert)concertList.get(i);
+        final Concert concert = concertList.get(i);
         viewHolder.name.setText(concert.getName());
         viewHolder.date.setText(concert.getDate());
         viewHolder.venue.setText(concert.getVenue().getVenueName());
