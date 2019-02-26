@@ -20,7 +20,7 @@ import static android.view.View.VISIBLE;
 public class SingleEventFragment extends BaseFragment {
     CheckBox isFav;
     ImageView bandImage;
-    Button notesButton;
+    Button notesButton,returnButton;
 
     public SingleEventFragment(){}
 
@@ -34,6 +34,7 @@ public class SingleEventFragment extends BaseFragment {
         Concert concert = getJsonConcert();
         isFav = view.findViewById(R.id.single_like_icon);
         notesButton=view.findViewById(R.id.add_notes_button);
+        returnButton=view.findViewById(R.id.return_button);
         isFav.setChecked(concert.isFavorite());
         if(concert.isFavorite()){
             notesButton.setVisibility(VISIBLE);
@@ -41,14 +42,15 @@ public class SingleEventFragment extends BaseFragment {
         notesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditNotesFragment editNotesFragment = EditNotesFragment.newInstance(); //get a new Fragment instance
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.mainFragment, editNotesFragment)
-                        .addToBackStack(null)
-                        .commit();
+                editNotesFragment(getActivity());
             }
         });
-
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
         bandImage = view.findViewById(R.id.single_band_picture);
         Picasso.get().load(concert.getImageURL()).fit().into(bandImage);
         TabLayout tabLayout;
@@ -62,10 +64,10 @@ public class SingleEventFragment extends BaseFragment {
 
     private void setupViewPager(ViewPager viewPager,boolean isFav) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new ConcertInformationFragment(), "Information");
-        adapter.addFragment(new VenueInformationFragment(), "Venue");
+        adapter.addFragment(concertInformationFragment, "Information");
+        adapter.addFragment(venueInformationFragment, "Venue");
         if(isFav){
-            adapter.addFragment(new NotesFragment(),"Notes");
+            adapter.addFragment(notesFragment,"Notes");
         }
         viewPager.setAdapter(adapter);
     }

@@ -1,5 +1,6 @@
 package com.example.concertmate.Fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,11 +17,12 @@ import com.example.concertmate.Adapters.concertAdapterView;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.Models.Venue;
 import com.example.concertmate.R;
-import com.google.gson.Gson;
+import com.example.concertmate.Utils.TinyDB;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -41,7 +43,7 @@ public class BaseFragment extends Fragment {
     static TabFragment tabFragment;
     static VenueInformationFragment venueInformationFragment;
 
-    public void ticketmasterApiRequest(Context context, final concertAdapterView adapter, Calendar c, String s) {
+    public void ticketmasterApiRequest(Context context, final concertAdapterView adapter, String s) {
         String test = "Music";
         s = s.trim();
         s = s.replaceAll("\\s", "%20");
@@ -54,14 +56,14 @@ public class BaseFragment extends Fragment {
 
         url.append("https://app.ticketmaster.com/discovery/v2/events.json?&apikey=").append(getString(R.string.ticketmasterAPI))
                 .append("&countryCode=IE").append("&size=200").append("&classificationName=").append(pref.getString("class", test));
-        c.add(Calendar.MONTH, 3);
+
         if (StringUtils.isNotBlank(s)) {
             concertList.clear();
             url.append("&keyword=").append(s);
         } else {
             concertList.clear();
-            url.append("&startDateTime=").append(pref.getString("fromDate", sdf.format(c.getTime())))
-                    .append("&endDateTime=").append(pref.getString("toDate", sdf.format(c.getTime())));
+            url.append("&startDateTime=").append(pref.getString("fromDate", sdf.format(DateTime.now().toDate())));
+            url.append("&endDateTime=").append(pref.getString("toDate", sdf.format(DateTime.now().plusDays(1).plusMonths(3).withTimeAtStartOfDay().toDate())));
         }
         url.append("&sort=").append("date,asc");
 
@@ -149,19 +151,14 @@ public class BaseFragment extends Fragment {
         venueInformationFragment = new VenueInformationFragment();
     }
     public Concert getJsonConcert(){
-        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = pref.getString("concertObj", "");
-        return gson.fromJson(json, Concert.class);
+        TinyDB tinydb = new TinyDB(getContext());
+        return   tinydb.getObject("concertObj",Concert.class);
     }
 
     public void saveJsonConcert(Concert concert){
-        SharedPreferences pref = getContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(concert);
-        editor.putString("concertObj", json);
-        editor.apply();
+        TinyDB tinydb = new TinyDB(getContext());
+        tinydb.putObject("concertObj",concert);
+
     }
 
     public static void tabFragment(FragmentActivity activity){

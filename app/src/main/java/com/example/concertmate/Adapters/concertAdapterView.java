@@ -11,9 +11,11 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.concertmate.Fragments.BaseFragment;
 import com.example.concertmate.Fragments.SingleEventFragment;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.R;
+import com.example.concertmate.Utils.TinyDB;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,7 +51,7 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
     @Override
     public void onBindViewHolder(@NonNull myViewHolder viewHolder, int i) {
         final CheckBox box = viewHolder.box;
-        final Concert concert = concertList.get(i);
+        final Concert concert = (Concert)concertList.get(i);
         viewHolder.name.setText(concert.getName());
         viewHolder.date.setText(concert.getDate());
         viewHolder.venue.setText(concert.getVenue().getVenueName());
@@ -90,17 +92,9 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
         viewHolder.picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences pref = v.getContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                Gson gson = new Gson();
-                String json = gson.toJson(concert);
-                editor.putString("concertObj", json);
-                editor.apply();
-                SingleEventFragment singleEventFragment = SingleEventFragment.newInstance();
-                activity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.mainFragment, singleEventFragment)
-                        .addToBackStack(null)
-                        .commit();
+                TinyDB tinydb = new TinyDB(activity);
+                tinydb.putObject("concertObj",concert);
+                BaseFragment.singleEventFragment(activity);
             }
         });
 

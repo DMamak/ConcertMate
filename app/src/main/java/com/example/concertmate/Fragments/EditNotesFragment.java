@@ -44,13 +44,13 @@ public class EditNotesFragment extends BaseFragment {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_cancel:
-                        singleEventFragment(getActivity());
+                        getActivity().getSupportFragmentManager().popBackStack();
                         return true;
                     case R.id.navigation_delete:
                         concert.getNotesArrayList().remove(concert.getNotesArrayList().get(getArguments().getInt("positionOfNote")));
                         mDatabase.child("concert").child(concert.getId()).setValue(concert);
                         saveJsonConcert(concert);
-                        singleEventFragment(getActivity());
+                        getActivity().getSupportFragmentManager().popBackStack();
                         return true;
                     case R.id.navigation_save:
                         ArrayList<Notes> notes = concert.getNotesArrayList();
@@ -58,7 +58,7 @@ public class EditNotesFragment extends BaseFragment {
                         concert.setNotesArrayList(notes);
                         mDatabase.child("concert").child(concert.getId()).setValue(concert);
                         saveJsonConcert(concert);
-                        singleEventFragment(getActivity());
+                        getActivity().getSupportFragmentManager().popBackStack();
                         return true;
                 }
                 return false;

@@ -15,6 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.concertmate.R;
+import com.example.concertmate.Utils.TinyDB;
+
+import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -156,27 +159,24 @@ public class FilterFragment extends BaseFragment {
                 if (tribute != null && tribute.isChecked()) {
                     classificationName = classificationName.concat("tribute,");
                 }
-                SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                GregorianCalendar calendar = new GregorianCalendar();
+                DateTime fromDateTime = getDateTimeAsDate(fromDate.getText().toString()).withTimeAtStartOfDay();
+                DateTime toDateTime =getDateTimeAsDate(toDate.getText().toString()).plusDays(1).withTimeAtStartOfDay();
+                if (fromDateTime.getMillis() > toDateTime.getMillis()) {
 
-                if (getDateTimeAsDate(calendar, fromDate.getText().toString()).after(getDateTimeAsDate(calendar, toDate.getText().toString()))) {
                     Toast.makeText(getContext(), "From Date is after To Date", Toast.LENGTH_LONG).show();
-                } else {
 
+                } else {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                     SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putString("class", classificationName);
-                    editor.putString("fromDate", myFormat.format(getDateTimeAsDate(calendar, fromDate.getText().toString())));
-                    editor.putString("toDate", myFormat.format(getDateTimeAsDate(calendar, toDate.getText().toString())));
-                    editor.apply();
-                    TabFragment tabFragment = TabFragment.newInstance();
-                    tabFragment.setArguments(newBundle);
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.mainFragment, tabFragment)
-                            .addToBackStack(null)
-                            .commit();
-                }
 
+
+                    editor.putString("fromDate",sdf.format(fromDateTime.toDate()));
+                    editor.putString("toDate", sdf.format(toDateTime.toDate()));
+                    editor.apply();
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
             }
         });
 
@@ -191,13 +191,12 @@ public class FilterFragment extends BaseFragment {
         toDate.setText(sdf.format(c.getTime()));
     }
 
-    public Date getDateTimeAsDate(GregorianCalendar calendar, String dateString) {
+    public DateTime getDateTimeAsDate(String dateString) {
         String[] sourceSplit = dateString.split("-");
-        int day = Integer.parseInt(sourceSplit[2]);
+        int day = Integer.parseInt(sourceSplit[0]);
         int month = Integer.parseInt(sourceSplit[1]);
-        int year = Integer.parseInt(sourceSplit[0]);
-        calendar.set(day, month - 1, year);
-        Date date = calendar.getTime();
-        return date;
+        int year = Integer.parseInt(sourceSplit[2]);
+
+        return new DateTime(year,month,day,0,0);
     }
 }

@@ -16,10 +16,7 @@ import com.example.concertmate.R;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-
 import org.apache.commons.lang3.StringUtils;
-import java.util.Calendar;
-
 
 public class ConcertFragment extends BaseFragment {
     concertAdapterView adapter;
@@ -33,18 +30,12 @@ public class ConcertFragment extends BaseFragment {
         int check = bundle.getInt("position");
         final Bundle newBundle = new Bundle();
         newBundle.putInt("position",check);
-        final Calendar c = Calendar.getInstance();
         View view = inflater.inflate(R.layout.recycler_fragment,container,false);
         FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FilterFragment filterFragment = FilterFragment.newInstance();//get a new Fragment instance
-                filterFragment.setArguments(newBundle);
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .add(R.id.mainFragment, filterFragment)
-                        .addToBackStack("concertFrag")
-                        .commit();
+             filterFragment(getActivity());
             }
         });
 
@@ -53,13 +44,13 @@ public class ConcertFragment extends BaseFragment {
             adapter = new concertAdapterView(concertList,getActivity());
             RecyclerView mRecycler = view.findViewById(R.id.recycler);
             mRecycler.setAdapter(adapter);
-            ticketmasterApiRequest(getActivity().getApplicationContext(), adapter, c,"");
+            ticketmasterApiRequest(getActivity().getApplicationContext(), adapter,"");
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
             mRecycler.setLayoutManager(mLayoutManager);
             mySearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String s) {
-                    ticketmasterApiRequest(getActivity().getApplicationContext(), adapter, c,s);
+                    ticketmasterApiRequest(getActivity().getApplicationContext(), adapter,s);
                     mySearch.clearFocus();
                     return false;
                 }
@@ -68,7 +59,7 @@ public class ConcertFragment extends BaseFragment {
                 public boolean onQueryTextChange(String s) {
                     //TODO clearFocus does not work as intented, waiting fot answer from stackOverflow,
                    if(!StringUtils.isNotBlank(s)){
-                       ticketmasterApiRequest(getActivity().getApplicationContext(), adapter, c,"");
+                       ticketmasterApiRequest(getActivity().getApplicationContext(), adapter,"");
                        mySearch.clearFocus();
                    }
                     return false;
