@@ -2,8 +2,8 @@
 Assigment 1 for Android 
 
 # References
-https://github.com/kcochibili/TinyDB--Android-Shared-Preferences-Turbo
-https://www.joda.org/joda-time/quickstart.html
+https://github.com/kcochibili/TinyDB--Android-Shared-Preferences-Turbo \n
+https://www.joda.org/joda-time/quickstart.html \n
 https://github.com/firebase/FirebaseUI-Android/blob/master/database/README.md
 https://www.youtube.com/watch?v=bNpWGI_hGGg
 https://stackoverflow.com/questions/10863572/programmatically-go-back-to-the-previous-fragment-in-the-backstack/17369359
