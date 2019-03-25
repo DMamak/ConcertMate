@@ -181,7 +181,7 @@ public class ConcertFragment extends BaseFragment {
                                 date = event.getJSONObject("dates").getJSONObject("start").getString("localDate");
                                 time = event.getJSONObject("dates").getJSONObject("start").has("localTime") ? event.getJSONObject("dates").getJSONObject("start").getString("localTime") : "TBD";
                                 genre = event.getJSONArray("classifications").getJSONObject(0).getJSONObject("genre").getString("name");
-                                subGenre = event.getJSONArray("classifications").getJSONObject(0).getJSONObject("subGenre").getString("name");
+                                subGenre =(event.getJSONArray("classifications").getJSONObject(0).has("subGenre"))? event.getJSONArray("classifications").getJSONObject(0).getJSONObject("subGenre").getString("name") : "N/A";
                                 JSONObject embedded = event.getJSONObject("_embedded");
                                 if (embedded.has("attractions")) {
                                     JSONObject attractions = embedded.getJSONArray("attractions").getJSONObject(0);

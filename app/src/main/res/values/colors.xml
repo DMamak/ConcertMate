@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="white">#FFFF</color>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="white">#FFFFFF</color>
     <color name="blueish">#0282C4</color>
+    <color name="blueish2">#A3DAF8</color>
     <color name="grayish">#C3C2C2</color>
     <color name="black">#000000</color>
     <color name="heading">#797979</color>
@@ -13,4 +14,16 @@
     <color name="backgroundColorWithText">#E1E1E1</color>
     <color name="backgroundColorWithGrayText">#F8F4F4</color>
     <color name="colorMultiDelete">#b1c4d9</color>
+    <color name="bg_login">#26AE90</color>
+    <color name="bg_register">#2E3237</color>
+    <color name="bg_main">#428BCA</color>
+    <color name="input_login">#222222</color>
+    <color name="input_login_hint">#999999</color>
+    <color name="input_register">#888888</color>
+    <color name="input_register_bg">#3b4148</color>
+    <color name="input_register_hint">#5e6266</color>
+    <color name="btn_login">#26ae90</color>
+    <color name="btn_login_bg">#eceef1</color>
+    <color name="lbl_name">#333333</color>
+    <color name="btn_logout_bg">#ff6861</color>
 </resources>
