@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
+import com.example.concertmate.LoginFragment;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.R;
+import com.example.concertmate.ResetPasswordFragment;
+import com.example.concertmate.SignupFragment;
 import com.example.concertmate.Utils.TinyDB;
 
 import java.util.ArrayList;
@@ -29,6 +32,30 @@ public class BaseFragment extends Fragment {
         TabFragment tabFragment = new TabFragment();
         activity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.mainFragment, tabFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public static void loginFragment(FragmentActivity activity) {
+        LoginFragment loginFragment = new LoginFragment();
+        activity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mainLoginFragment, loginFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public static void signupFragment(FragmentActivity activity) {
+        SignupFragment signupFragment = new SignupFragment();
+        activity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mainLoginFragment, signupFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public static void resetPasswordFragment(FragmentActivity activity) {
+        ResetPasswordFragment resetPasswordFragment = new ResetPasswordFragment();
+        activity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mainLoginFragment, resetPasswordFragment)
                 .addToBackStack(null)
                 .commit();
     }

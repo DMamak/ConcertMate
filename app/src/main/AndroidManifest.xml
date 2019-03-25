@@ -10,30 +10,26 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name=".BaseActivity"
-            android:label="@string/title_activity_base"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".SignupActivity"
-            android:label="@string/title_activity_base"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".ResetPasswordActivity"
-            android:label="@string/title_activity_base"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_base"
-            android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".MainLoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".BaseActivity"
+            android:label="@string/title_activity_base"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SignupFragment"
+            android:label="@string/title_activity_base"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ResetPasswordFragment"
+            android:label="@string/title_activity_base"
+            android:theme="@style/AppTheme.NoActionBar" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
