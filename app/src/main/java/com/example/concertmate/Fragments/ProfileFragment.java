@@ -83,6 +83,7 @@ public class ProfileFragment extends Fragment {
         deleteProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO create delete dialog and ask for password, reauth the user and then delete the user.
                 progressBar.setVisibility(View.VISIBLE);
                     user.delete()
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -93,6 +94,7 @@ public class ProfileFragment extends Fragment {
                                         startActivity(new Intent(getActivity(), MainLoginActivity.class));
                                         progressBar.setVisibility(View.GONE);
                                     } else {
+                                        Log.e("ERROR",task.getException().toString());
                                         Toast.makeText(getActivity(), "Failed to delete your account!", Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
                                     }
