@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.concertmate.Models.Venue;
 import com.example.concertmate.R;
+import com.example.concertmate.Utils.ExpandableTextView;
 
 
 public class VenueInformationFragment extends BaseFragment {
@@ -19,11 +20,11 @@ public class VenueInformationFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.venue_information_fragment, container, false);
-        TextView venueName = view.findViewById(R.id.single_venue_name);
-        TextView address = view.findViewById(R.id.single_venue_address);
-        TextView postcode = view.findViewById(R.id.single_venue_postcode);
-        TextView parking = view.findViewById(R.id.single_venue_parking);
-        TextView accessible = view.findViewById(R.id.single_venue_accessible);
+        ExpandableTextView venueName = view.findViewById(R.id.single_venue_name);
+        ExpandableTextView address = view.findViewById(R.id.single_venue_address);
+        ExpandableTextView postcode = view.findViewById(R.id.single_venue_postcode);
+        ExpandableTextView parking = view.findViewById(R.id.single_venue_parking);
+        ExpandableTextView accessible = view.findViewById(R.id.single_venue_accessible);
         Venue venue = getJsonConcert(getContext()).getVenue();
 
         venueName.setText(venue.getVenueName());

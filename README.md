@@ -28,4 +28,5 @@ https://firebase.google.com/docs/auth/android/manage-users
 
 https://firebase.google.com/docs/auth/android/manage-users#re-authenticate_a_user
 
+https://codexplo.wordpress.com/2013/09/07/android-expandable-textview/
 

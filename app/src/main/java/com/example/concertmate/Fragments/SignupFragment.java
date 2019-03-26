@@ -93,7 +93,7 @@ public class SignupFragment extends BaseFragment {
                                     Toast.makeText(getContext(), "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(getContext(),"Account Made!",
+                                    Toast.makeText(getContext(),"Account Made! Logging in...",
                                             Toast.LENGTH_SHORT).show();
                                     mStorage.child("avatar_tiny.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                         @Override

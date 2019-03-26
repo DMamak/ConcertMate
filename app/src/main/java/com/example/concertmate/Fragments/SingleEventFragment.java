@@ -24,7 +24,7 @@ import static android.view.View.VISIBLE;
 public class SingleEventFragment extends BaseFragment {
     CheckBox isFav;
     ImageView bandImage;
-    Button notesButton, returnButton;
+    Button notesButton;
     Concert concert;
     DatabaseReference mDatabase;
 
@@ -38,7 +38,6 @@ public class SingleEventFragment extends BaseFragment {
 
         isFav = view.findViewById(R.id.single_like_icon);
         notesButton = view.findViewById(R.id.add_notes_button);
-        returnButton = view.findViewById(R.id.return_button);
         isFav.setChecked(concert.isFavorite());
         if (concert.isFavorite()) {
             notesButton.setVisibility(VISIBLE);
@@ -59,12 +58,6 @@ public class SingleEventFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 goToEditNote(-1);
-            }
-        });
-        returnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
         bandImage = view.findViewById(R.id.single_band_picture);

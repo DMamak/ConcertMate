@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.R;
+import com.example.concertmate.Utils.ExpandableTextView;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,11 +27,11 @@ public class ConcertInformationFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_concert_information, container, false);
         final Concert concert = getJsonConcert(getContext());
-        TextView name = view.findViewById(R.id.single_concert_name);
-        TextView date = view.findViewById(R.id.single_concert_date);
-        TextView time = view.findViewById(R.id.single_concert_time);
-        TextView genre = view.findViewById(R.id.single_concert_genre);
-        TextView subGenre = view.findViewById(R.id.single_concert_sub_genre);
+        ExpandableTextView name = view.findViewById(R.id.single_concert_name);
+        ExpandableTextView date = view.findViewById(R.id.single_concert_date);
+        ExpandableTextView time = view.findViewById(R.id.single_concert_time);
+        ExpandableTextView genre = view.findViewById(R.id.single_concert_genre);
+        ExpandableTextView subGenre = view.findViewById(R.id.single_concert_sub_genre);
         ImageButton youtube = view.findViewById(R.id.youtube_button);
         ImageButton facebook = view.findViewById(R.id.facebook_button);
         ImageButton twitter = view.findViewById(R.id.twitter_button);
@@ -41,13 +42,13 @@ public class ConcertInformationFragment extends BaseFragment {
         subGenre.setText(concert.getSubGenre());
 
         if (!StringUtils.isNotBlank(concert.getYoutubeLink())) {
-            youtube.setVisibility(View.INVISIBLE);
+            youtube.setVisibility(View.GONE);
         }
         if (!StringUtils.isNotBlank(concert.getFacebookLink())) {
-            facebook.setVisibility(View.INVISIBLE);
+            facebook.setVisibility(View.GONE);
         }
         if (!StringUtils.isNotBlank(concert.getTwitterLink())) {
-            twitter.setVisibility(View.INVISIBLE);
+            twitter.setVisibility(View.GONE);
         }
         youtube.setOnClickListener(new View.OnClickListener() {
             @Override
