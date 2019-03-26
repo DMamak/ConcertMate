@@ -1,4 +1,4 @@
-package com.example.concertmate;
+package com.example.concertmate.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,43 +13,61 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.concertmate.BaseActivity;
 import com.example.concertmate.Fragments.BaseFragment;
+import com.example.concertmate.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class SignupFragment extends BaseFragment {
+public class LoginFragment extends BaseFragment {
+
+    public LoginFragment() {
+    }
 
     EditText inputEmail, inputPassword;
-    Button btnSignIn, btnSignUp;
-    ProgressBar progressBar;
     FirebaseAuth auth;
-
-    public SignupFragment(){}
+    ProgressBar progressBar;
+    Button btnSignup, btnLogin, btnReset;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.signup_fragment, container, false);
         auth = FirebaseAuth.getInstance();
-        btnSignIn = view.findViewById(R.id.sign_in_button);
-        btnSignUp = view.findViewById(R.id.sign_up_button);
+        View view = inflater.inflate(R.layout.login_fragment, container, false);
+        if (auth.getCurrentUser() != null) {
+            startActivity(new Intent(getActivity(), BaseActivity.class));
+        }
+
+
         inputEmail = view.findViewById(R.id.email);
         inputPassword = view.findViewById(R.id.password);
         progressBar = view.findViewById(R.id.progressBar);
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
+        btnSignup = view.findViewById(R.id.btn_signup);
+        btnLogin = view.findViewById(R.id.btn_login);
+        btnReset = view.findViewById(R.id.btn_reset_password);
+        auth = FirebaseAuth.getInstance();
+
+        btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginFragment(getActivity());
+                signupFragment(getActivity());
             }
         });
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
+
+        btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                resetPasswordFragment(getActivity());
+            }
+        });
 
-                String email = inputEmail.getText().toString().trim();
-                String password = inputPassword.getText().toString().trim();
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = inputEmail.getText().toString();
+                final String password = inputPassword.getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
@@ -60,37 +78,26 @@ public class SignupFragment extends BaseFragment {
                     Toast.makeText(getContext(), "Enter password!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                if (password.length() < 6) {
-                    Toast.makeText(getContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 progressBar.setVisibility(View.VISIBLE);
-                auth.createUserWithEmailAndPassword(email, password)
+                auth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                Toast.makeText(getContext(), "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
                                 if (!task.isSuccessful()) {
-                                    Toast.makeText(getContext(), "Authentication failed." + task.getException(),
-                                            Toast.LENGTH_SHORT).show();
+                                    if (password.length() < 6) {
+                                        inputPassword.setError(getString(R.string.minimum_password));
+                                    } else {
+                                        Toast.makeText(getContext(), getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                                    }
                                 } else {
-                                    startActivity(new Intent(getActivity(), BaseActivity.class));
+                                    Intent intent = new Intent(getActivity(), BaseActivity.class);
+                                    startActivity(intent);
                                 }
                             }
                         });
-
             }
         });
-
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        progressBar.setVisibility(View.GONE);
     }
 }

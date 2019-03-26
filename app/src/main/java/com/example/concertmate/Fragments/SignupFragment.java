@@ -1,4 +1,4 @@
-package com.example.concertmate;
+package com.example.concertmate.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,59 +13,45 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.concertmate.BaseActivity;
 import com.example.concertmate.Fragments.BaseFragment;
+import com.example.concertmate.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginFragment extends BaseFragment {
-
-    public LoginFragment() {
-    }
+public class SignupFragment extends BaseFragment {
 
     EditText inputEmail, inputPassword;
-    FirebaseAuth auth;
+    Button btnSignIn, btnSignUp;
     ProgressBar progressBar;
-    Button btnSignup, btnLogin, btnReset;
+    FirebaseAuth auth;
+
+    public SignupFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        View view = inflater.inflate(R.layout.signup_fragment, container, false);
         auth = FirebaseAuth.getInstance();
-        View view = inflater.inflate(R.layout.login_fragment, container, false);
-        if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(getActivity(), BaseActivity.class));
-        }
-
-
+        btnSignIn = view.findViewById(R.id.sign_in_button);
+        btnSignUp = view.findViewById(R.id.sign_up_button);
         inputEmail = view.findViewById(R.id.email);
         inputPassword = view.findViewById(R.id.password);
         progressBar = view.findViewById(R.id.progressBar);
-        btnSignup = view.findViewById(R.id.btn_signup);
-        btnLogin = view.findViewById(R.id.btn_login);
-        btnReset = view.findViewById(R.id.btn_reset_password);
-        auth = FirebaseAuth.getInstance();
-
-        btnSignup.setOnClickListener(new View.OnClickListener() {
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signupFragment(getActivity());
+                loginFragment(getActivity());
             }
         });
-
-        btnReset.setOnClickListener(new View.OnClickListener() {
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetPasswordFragment(getActivity());
-            }
-        });
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = inputEmail.getText().toString();
-                final String password = inputPassword.getText().toString();
+                String email = inputEmail.getText().toString().trim();
+                String password = inputPassword.getText().toString().trim();
 
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
@@ -76,26 +62,37 @@ public class LoginFragment extends BaseFragment {
                     Toast.makeText(getContext(), "Enter password!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                if (password.length() < 6) {
+                    Toast.makeText(getContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 progressBar.setVisibility(View.VISIBLE);
-                auth.signInWithEmailAndPassword(email, password)
+                auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+                                Toast.makeText(getContext(), "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
                                 if (!task.isSuccessful()) {
-                                    if (password.length() < 6) {
-                                        inputPassword.setError(getString(R.string.minimum_password));
-                                    } else {
-                                        Toast.makeText(getContext(), getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
-                                    }
+                                    Toast.makeText(getContext(), "Authentication failed." + task.getException(),
+                                            Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Intent intent = new Intent(getActivity(), BaseActivity.class);
-                                    startActivity(intent);
+                                    startActivity(new Intent(getActivity(), BaseActivity.class));
                                 }
                             }
                         });
+
             }
         });
+
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        progressBar.setVisibility(View.GONE);
     }
 }

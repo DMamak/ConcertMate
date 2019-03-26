@@ -5,11 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
-import com.example.concertmate.LoginFragment;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.R;
-import com.example.concertmate.ResetPasswordFragment;
-import com.example.concertmate.SignupFragment;
 import com.example.concertmate.Utils.TinyDB;
 
 import java.util.ArrayList;
