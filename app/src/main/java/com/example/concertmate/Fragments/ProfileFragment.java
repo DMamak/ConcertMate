@@ -4,25 +4,44 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.concertmate.MainLoginActivity;
+import com.example.concertmate.Models.User;
 import com.example.concertmate.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.NotNull;
+import com.squareup.picasso.Picasso;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Map;
 
 public class ProfileFragment extends Fragment {
+     DatabaseReference mDatabase;
      Button changeUsername,changeEmail,changePassword,deleteProfile,sendReset;
+     ImageButton avatar;
+     TextView username,email;
      ProgressBar progressBar;
      FirebaseAuth.AuthStateListener authListener;
      FirebaseAuth auth;
+     User dbUser;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -33,8 +52,23 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.profile_fragment, container, false);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         auth = FirebaseAuth.getInstance();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase.child("Users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                dbUser = dataSnapshot.getValue(User.class);
+                username.setText(dbUser.getUsername());
+                email.setText(dbUser.getEmail());
+              Picasso.get().load(dbUser.getImageUrl()).fit().into(avatar);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         //check if by user is still signed in.
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -47,7 +81,9 @@ public class ProfileFragment extends Fragment {
                 }
             }
         };
-
+        username = view.findViewById(R.id.userNameTextView);
+        email = view.findViewById(R.id.userEmailTextView);
+        avatar=view.findViewById(R.id.userAvatarImageButton);
         progressBar = view.findViewById(R.id.profileProgressBar);
         changeUsername = view.findViewById(R.id.usernameChangeButton);
         changeEmail = view.findViewById(R.id.emailChangeButton);
