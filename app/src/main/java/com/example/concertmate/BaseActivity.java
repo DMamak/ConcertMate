@@ -66,8 +66,8 @@ public class BaseActivity extends AppCompatActivity
        // auth.getCurrentUser().updateProfile(profileUpdates);
 
         Log.i("INFO",user.getPhotoUrl().toString());
-        username.setText(user.getDisplayName());
-        email.setText(user.getEmail());
+        setUsername(user.getDisplayName());
+        setEmail(user.getEmail());
         Picasso.get().load(user.getPhotoUrl()).fit().into(avatar);
 
     }
@@ -110,5 +110,12 @@ public class BaseActivity extends AppCompatActivity
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void setEmail(String emailText){
+        email.setText(emailText);
+    }
+    public void setUsername(String usernameText){
+        username.setText(usernameText);
     }
 }
