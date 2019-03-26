@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
 import com.example.concertmate.Models.Concert;
-import com.example.concertmate.ProfileFragment;
 import com.example.concertmate.R;
 import com.example.concertmate.Utils.TinyDB;
 
