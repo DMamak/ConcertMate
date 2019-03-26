@@ -1,5 +1,6 @@
 package com.example.concertmate;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -22,10 +23,11 @@ public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
         FirebaseAuth auth;
         TextView test;
+        BaseFragment baseFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        BaseFragment baseFragment = new BaseFragment();
+        baseFragment = new BaseFragment();
         super.onCreate(savedInstanceState);
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
@@ -74,7 +76,10 @@ public class BaseActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_sign_out) {
+            auth.signOut();
+            startActivity(new Intent(BaseActivity.this, MainLoginActivity.class));
+            finish();
 
         }
 
