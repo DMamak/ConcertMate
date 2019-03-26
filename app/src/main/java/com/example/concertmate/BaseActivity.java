@@ -2,8 +2,9 @@ package com.example.concertmate;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,23 +17,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.concertmate.Fragments.BaseFragment;
-import com.example.concertmate.Models.User;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
         FirebaseAuth auth;
         ImageView avatar;
         TextView username,email;
         BaseFragment baseFragment;
-        DatabaseReference mDatabase;
-        User dbUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,27 +54,21 @@ public class BaseActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
         auth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         View headerView = navigationView.getHeaderView(0);
         email = headerView.findViewById(R.id.nav_email_text);
         username = headerView.findViewById(R.id.nav_username_text);
         avatar = headerView.findViewById(R.id.nav_avatar);
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        mDatabase.child("Users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                dbUser = dataSnapshot.getValue(User.class);
-                username.setText(dbUser.getUsername());
-                email.setText(dbUser.getEmail());
-                Picasso.get().load(dbUser.getImageUrl()).fit().into(avatar);
-            }
+//        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+//                .setDisplayName(username).setPhotoUri(photoUrl).build();
+       // auth.getCurrentUser().updateProfile(profileUpdates);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
+        Log.i("INFO",user.getPhotoUrl().toString());
+        username.setText(user.getDisplayName());
+        email.setText(user.getEmail());
+        Picasso.get().load(user.getPhotoUrl()).fit().into(avatar);
 
     }
 

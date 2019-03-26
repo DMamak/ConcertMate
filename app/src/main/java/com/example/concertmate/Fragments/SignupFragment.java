@@ -1,6 +1,7 @@
 package com.example.concertmate.Fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,20 +14,19 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.concertmate.BaseActivity;
-import com.example.concertmate.Models.User;
 import com.example.concertmate.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.apache.commons.lang3.StringUtils;
-
 public class SignupFragment extends BaseFragment {
-
-    DatabaseReference mDatabase;
+    StorageReference mStorage;
     EditText inputEmail, inputPassword,inputUsername;
     Button btnSignIn, btnSignUp;
     ProgressBar progressBar;
@@ -39,7 +39,7 @@ public class SignupFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.signup_fragment, container, false);
         auth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mStorage = FirebaseStorage.getInstance().getReference();
         btnSignIn = view.findViewById(R.id.sign_in_button);
         btnSignUp = view.findViewById(R.id.sign_up_button);
         inputUsername = view.findViewById(R.id.username);
@@ -82,6 +82,7 @@ public class SignupFragment extends BaseFragment {
                 }
 
                 progressBar.setVisibility(View.VISIBLE);
+
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                             @Override
@@ -92,12 +93,23 @@ public class SignupFragment extends BaseFragment {
                                     Toast.makeText(getContext(), "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 } else {
+                                    Toast.makeText(getContext(),"Account Made!",
+                                            Toast.LENGTH_SHORT).show();
+                                    mStorage.child("avatar_tiny.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                    .setDisplayName(username).setPhotoUri(uri).build();
 
-                                    User user = new User(auth.getCurrentUser().getUid(),
-                                            username,email,
-                                            "https://firebasestorage.googleapis.com/v0/b/concertmate-e87ec.appspot.com/o/avatar_tiny.jpg?alt=media&token=0a9802ea-f8de-4650-a241-8c529f322c44");
-                                    mDatabase.child("Users").child(user.getUID()).setValue(user.toMap());
-                                    startActivity(new Intent(getActivity(), BaseActivity.class));
+                                            auth.getCurrentUser().updateProfile(profileUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    startActivity(new Intent(getActivity(), BaseActivity.class));
+                                                }
+                                            });
+                                        }
+                                    });
+
                                 }
                             }
                         });
