@@ -17,3 +17,15 @@ https://ddrohan.github.io/wit-mad-2-2019/topic02-ui-design/unit-1/book-coffeemat
 https://gist.github.com/Kishanjvaghela/67c42f8f32efaa2fadb682bc980e9280
 
 https://www.androidhive.info/2011/11/android-xml-parsing-tutorial/
+
+https://www.androidhive.info/2016/06/android-getting-started-firebase-simple-login-registration-auth/
+
+https://stackoverflow.com/questions/36694263/how-to-change-navigation-header-widgets-value-dynamically
+
+https://developer.android.com/training/implementing-navigation/nav-drawer
+
+https://firebase.google.com/docs/auth/android/manage-users
+
+https://firebase.google.com/docs/auth/android/manage-users#re-authenticate_a_user
+
+
