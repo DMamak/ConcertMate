@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import com.example.concertmate.Adapters.ViewPagerAdapter;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -27,12 +28,14 @@ public class SingleEventFragment extends BaseFragment {
     Button notesButton;
     Concert concert;
     DatabaseReference mDatabase;
+    FirebaseAuth auth;
 
     public SingleEventFragment() {
     }
 
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        auth = FirebaseAuth.getInstance();
         View view = inflater.inflate(R.layout.single_event_fragment, container, false);
         concert = getJsonConcert(getContext());
 
@@ -47,10 +50,10 @@ public class SingleEventFragment extends BaseFragment {
             public void onClick(View v) {
                 if (isFav.isChecked()) {
                     concert.setFavorite(true);
-                    mDatabase.child("concert").child(concert.getId()).setValue(concert);
+                    mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
                 } else {
                     concert.setFavorite(false);
-                    mDatabase.child("concert").child(concert.getId()).removeValue();
+                    mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
                 }
             }
         });

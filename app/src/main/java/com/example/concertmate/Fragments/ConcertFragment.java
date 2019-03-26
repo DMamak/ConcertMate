@@ -26,6 +26,7 @@ import com.example.concertmate.Models.Concert;
 import com.example.concertmate.Models.Venue;
 import com.example.concertmate.R;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
@@ -49,6 +50,7 @@ public class ConcertFragment extends BaseFragment {
     String id, name, date, time, genre, venueName, postCode, address, longitude, latitude, phone, parking, access, subGenre, youtube, twitter, facebook;
     String imageURL = "";
     RequestQueue mRequestQueue;
+    FirebaseAuth auth;
 
 
     public ConcertFragment() {
@@ -102,10 +104,11 @@ public class ConcertFragment extends BaseFragment {
             fab.hide();
             pDialog.setVisibility(View.GONE);
             noResults.setVisibility(View.GONE);
+            auth = FirebaseAuth.getInstance();
             final Query query;
             query = FirebaseDatabase.getInstance()
                     .getReference()
-                    .child("concert");
+                    .child("concert").child(auth.getCurrentUser().getUid());
 
             FirebaseRecyclerOptions<Concert> options =
                     new FirebaseRecyclerOptions.Builder<Concert>()

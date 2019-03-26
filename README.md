@@ -30,3 +30,5 @@ https://firebase.google.com/docs/auth/android/manage-users#re-authenticate_a_use
 
 https://codexplo.wordpress.com/2013/09/07/android-expandable-textview/
 
+https://developer.android.com/guide/topics/ui/layout/linear
+

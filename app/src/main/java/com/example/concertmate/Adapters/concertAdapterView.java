@@ -14,6 +14,7 @@ import com.example.concertmate.Fragments.BaseFragment;
 import com.example.concertmate.Models.Concert;
 import com.example.concertmate.R;
 import com.example.concertmate.Utils.TinyDB;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +27,7 @@ import java.util.List;
 public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.myViewHolder> {
     public List<Concert> concertList;
     private DatabaseReference mDatabase;
+    private FirebaseAuth auth;
     private FragmentActivity activity;
 
 
@@ -52,15 +54,16 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
         viewHolder.venue.setText(concert.getVenue().getVenueName());
         Picasso.get().load(concert.getImageURL()).fit().into(viewHolder.picture);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        auth = FirebaseAuth.getInstance();
         box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (box.isChecked()) {
                     concert.setFavorite(true);
-                    mDatabase.child("concert").child(concert.getId()).setValue(concert);
+                    mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
                 } else {
                     concert.setFavorite(false);
-                    mDatabase.child("concert").child(concert.getId()).removeValue();
+                    mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
                 }
             }
         });

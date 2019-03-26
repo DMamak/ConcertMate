@@ -15,6 +15,7 @@ import com.example.concertmate.Models.Concert;
 import com.example.concertmate.R;
 import com.example.concertmate.Utils.TinyDB;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -23,6 +24,7 @@ public class FavoriteConcertAdapter extends FirebaseRecyclerAdapter<Concert, Fav
     private FragmentActivity activity;
     private RecycleItemClick recycleItemClick;
     private DatabaseReference mDatabase;
+    private FirebaseAuth auth;
 
     public FavoriteConcertAdapter(FirebaseRecyclerOptions<Concert> options) {
         super(options, true);
@@ -59,12 +61,13 @@ public class FavoriteConcertAdapter extends FirebaseRecyclerAdapter<Concert, Fav
         holder.venue.setText(concert.getVenue().getVenueName());
         Picasso.get().load(concert.getImageURL()).fit().into(holder.picture);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        auth = FirebaseAuth.getInstance();
         box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!box.isChecked()) {
                     concert.setFavorite(false);
-                    mDatabase.child("concert").child(concert.getId()).removeValue();
+                    mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
                 }
             }
         });
