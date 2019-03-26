@@ -44,6 +44,7 @@ public class BaseActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView =findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().getItem(0).setChecked(true);
         auth = FirebaseAuth.getInstance();
         View headerView = navigationView.getHeaderView(0);
         test = headerView.findViewById(R.id.test_view);
@@ -67,8 +68,9 @@ public class BaseActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+            baseFragment.profileFragment(this);
+        } else if (id == R.id.nav_concerts) {
+            baseFragment.tabFragment(this);
 
         } else if (id == R.id.nav_slideshow) {
 

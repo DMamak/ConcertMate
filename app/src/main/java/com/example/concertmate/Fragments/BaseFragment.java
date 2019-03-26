@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
 import com.example.concertmate.Models.Concert;
+import com.example.concertmate.ProfileFragment;
 import com.example.concertmate.R;
 import com.example.concertmate.Utils.TinyDB;
 
@@ -53,6 +54,14 @@ public class BaseFragment extends Fragment {
         ResetPasswordFragment resetPasswordFragment = new ResetPasswordFragment();
         activity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.mainLoginFragment, resetPasswordFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public static void profileFragment(FragmentActivity activity) {
+        ProfileFragment profileFragment = new ProfileFragment();
+        activity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mainFragment, profileFragment)
                 .addToBackStack(null)
                 .commit();
     }
