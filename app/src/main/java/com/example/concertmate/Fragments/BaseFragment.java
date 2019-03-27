@@ -32,6 +32,13 @@ public class BaseFragment extends Fragment {
                 .addToBackStack(null)
                 .commit();
     }
+    public static void mapFragment(FragmentActivity activity) {
+        MapsFragment mapFragment = new MapsFragment();
+        activity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mainFragment, mapFragment)
+                .addToBackStack(null)
+                .commit();
+    }
 
     public static void loginFragment(FragmentActivity activity) {
         LoginFragment loginFragment = new LoginFragment();
