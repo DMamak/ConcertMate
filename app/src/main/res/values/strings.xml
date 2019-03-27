@@ -79,4 +79,5 @@
     <string name="dialog_username_new">New Username....</string>
     <string name="dialog_email_new">New Email....</string>
     <string name="dialog_password_new">New Password....</string>
+    <string name="current_password">Current Password....</string>
 </resources>

@@ -83,24 +83,7 @@ public class ProfileFragment extends Fragment {
         deleteProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO create delete dialog and ask for password, reauth the user and then delete the user.
-                progressBar.setVisibility(View.VISIBLE);
-                    user.delete()
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(getActivity(), "Your profile is deleted:( Create a account now!", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(getActivity(), MainLoginActivity.class));
-                                        progressBar.setVisibility(View.GONE);
-                                    } else {
-                                        Log.e("ERROR",task.getException().toString());
-                                        Toast.makeText(getActivity(), "Failed to delete your account!", Toast.LENGTH_SHORT).show();
-                                        progressBar.setVisibility(View.GONE);
-                                    }
-                                }
-                            });
-
+                ShowPopup(3,"You are about to delete your account.Are you sure to continue?");
             }
         });
 
@@ -177,6 +160,13 @@ public class ProfileFragment extends Fragment {
                 oldchange.setText(hint);
                 newChange.setHint(getString(R.string.dialog_password_new));
                 break;
+            case 3:
+                title.setText(getString(R.string.delete_user));
+                currentSomething.setVisibility(View.GONE);
+                oldchange.setText(hint);
+                newChange.setVisibility(View.GONE);
+                update.setText(getString(R.string.title_delete));
+                break;
         }
         txtclose = myDialog.findViewById(R.id.txtclose);
         txtclose.setOnClickListener(new View.OnClickListener() {
@@ -193,26 +183,18 @@ public class ProfileFragment extends Fragment {
                 String currentpassword = currentPassword.getText().toString();
 
                 if (!StringUtils.isNotBlank(currentpassword) && buttonClicked !=0) {
-
                     Toast.makeText(getActivity(), "Current Password is Empty", Toast.LENGTH_SHORT).show();
+                    dialogProgressBar.setVisibility(View.INVISIBLE);
                 } else {
 
                     final String newChangeText = newChange.getText().toString();
 
-                    if (StringUtils.isNotBlank(newChangeText)) {
+                    if (StringUtils.isNotBlank(newChangeText) || buttonClicked ==3) {
 
                         switch (buttonClicked) {
                             case 0:
                                 final UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                         .setDisplayName(newChangeText).build();
-                                AuthCredential credential = EmailAuthProvider
-                                        .getCredential(user.getEmail(), currentpassword);
-                                user.reauthenticate(credential)
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    Log.d("INFO", "User re-authenticated.");
                                                     auth.getCurrentUser().updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
@@ -229,13 +211,6 @@ public class ProfileFragment extends Fragment {
                                                             }
                                                         }
                                                     });
-                                                } else {
-                                                    Log.d("INFO", "User not re-authenticated.");
-                                                    dialogProgressBar.setVisibility(View.GONE);
-                                                    Toast.makeText(getActivity(), "Current Password doesn't match our records", Toast.LENGTH_SHORT).show();
-                                                }
-                                            }
-                                        });
 
                                 break;
 
@@ -311,6 +286,41 @@ public class ProfileFragment extends Fragment {
 
 
                                 }
+                                break;
+                            case 3:
+                                progressBar.setVisibility(View.VISIBLE);
+                                AuthCredential credential3 = EmailAuthProvider
+                                        .getCredential(user.getEmail(), currentpassword);
+                                user.reauthenticate(credential3).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            Log.d("INFO", "User re-authenticated.");
+                                            user.delete()
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                Toast.makeText(getActivity(), "Your profile is deleted:( Create a account now!", Toast.LENGTH_SHORT).show();
+                                                                startActivity(new Intent(getActivity(), MainLoginActivity.class));
+                                                                progressBar.setVisibility(View.GONE);
+                                                            } else {
+                                                                Log.e("ERROR",task.getException().toString());
+                                                                Toast.makeText(getActivity(), "Failed to delete your account!", Toast.LENGTH_SHORT).show();
+                                                                progressBar.setVisibility(View.GONE);
+                                                            }
+                                                        }
+                                                    });
+                                        }else{
+                                            dialogProgressBar.setVisibility(View.GONE);
+                                            Toast.makeText(getActivity(), "Failed to Delete Account", Toast.LENGTH_LONG).show();
+                                            Log.e("ERROR",task.getException().toString());
+                                        }
+                                    }
+                                });
+
+
+
                                 break;
                         }
                     } else {
