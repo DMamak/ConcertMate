@@ -48,6 +48,7 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
     @Override
     public void onBindViewHolder(@NonNull myViewHolder viewHolder, int i) {
         final CheckBox box = viewHolder.box;
+        final CheckBox attend = viewHolder.attending;
         final Concert concert = concertList.get(i);
         viewHolder.name.setText(concert.getName());
         viewHolder.date.setText(concert.getDate());
@@ -109,6 +110,7 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
         private TextView venue;
         private ImageView picture;
         private CheckBox box;
+        private CheckBox attending;
 
         private myViewHolder(View itemView) {
             super(itemView);
@@ -117,6 +119,7 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
             date = itemView.findViewById(R.id.concert_date);
             venue = itemView.findViewById(R.id.venue_name);
             box = itemView.findViewById(R.id.like_icon);
+            attending = itemView.findViewById(R.id.attend_icon);
         }
     }
 

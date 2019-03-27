@@ -15,6 +15,7 @@ public class Concert {
     private String twitterLink;
     private Venue venue;
     private boolean favorite;
+    private boolean attending;
     private ArrayList<Notes> notesArrayList = new ArrayList<>();
 
     public Concert(String id, String name, String imageURL, String date, String time, String genre, String subGenre, Venue venue, boolean favorite, String youtube, String twitter, String facebook) {
@@ -33,6 +34,14 @@ public class Concert {
     }
 
     public Concert() {
+    }
+
+    public boolean isAttending() {
+        return attending;
+    }
+
+    public void setAttending(boolean attending) {
+        this.attending = attending;
     }
 
     public String getYoutubeLink() {
