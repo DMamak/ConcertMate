@@ -55,6 +55,8 @@ public class FavoriteConcertAdapter extends FirebaseRecyclerAdapter<Concert, Fav
     @Override
     protected void onBindViewHolder(ConcertViewHolder holder, int position, final Concert concert) {
         final CheckBox box = holder.box;
+        final CheckBox attend = holder.attending;
+        attend.setChecked(concert.isAttending());
         box.setChecked(concert.isFavorite());
         holder.name.setText(concert.getName());
         holder.date.setText(concert.getDate());
@@ -66,11 +68,33 @@ public class FavoriteConcertAdapter extends FirebaseRecyclerAdapter<Concert, Fav
             @Override
             public void onClick(View v) {
                 if (!box.isChecked()) {
-                    concert.setFavorite(false);
-                    mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
+                    if (concert.isAttending()) {
+                        concert.setFavorite(false);
+                        mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
+                    } else {
+                        concert.setFavorite(false);
+                        mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
+                    }
                 }
             }
         });
+
+        attend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!attend.isChecked()) {
+                    if (concert.isFavorite()) {
+                        concert.setAttending(false);
+                        mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
+                    } else {
+                        concert.setAttending(false);
+                        mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
+                    }
+                }
+            }
+        });
+
+
         holder.picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,6 +118,7 @@ public class FavoriteConcertAdapter extends FirebaseRecyclerAdapter<Concert, Fav
         private TextView venue;
         private ImageView picture;
         private CheckBox box;
+        private CheckBox attending;
 
         private ConcertViewHolder(View itemView) {
             super(itemView);
@@ -102,6 +127,7 @@ public class FavoriteConcertAdapter extends FirebaseRecyclerAdapter<Concert, Fav
             date = itemView.findViewById(R.id.concert_date);
             venue = itemView.findViewById(R.id.venue_name);
             box = itemView.findViewById(R.id.like_icon);
+            attending = itemView.findViewById(R.id.attend_icon);
         }
     }
 }
