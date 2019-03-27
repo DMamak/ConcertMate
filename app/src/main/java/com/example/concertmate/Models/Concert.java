@@ -147,4 +147,24 @@ public class Concert {
     public void setNotesArrayList(ArrayList<Notes> notesArrayList) {
         this.notesArrayList = notesArrayList;
     }
+
+    @Override
+    public String toString() {
+        return "Concert{" +
+                "Id='" + Id + '\'' +
+                ", name='" + name + '\'' +
+                ", imageURL='" + imageURL + '\'' +
+                ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
+                ", genre='" + genre + '\'' +
+                ", subGenre='" + subGenre + '\'' +
+                ", youtubeLink='" + youtubeLink + '\'' +
+                ", facebookLink='" + facebookLink + '\'' +
+                ", twitterLink='" + twitterLink + '\'' +
+                ", venue=" + venue +
+                ", favorite=" + favorite +
+                ", attending=" + attending +
+                ", notesArrayList=" + notesArrayList +
+                '}';
+    }
 }

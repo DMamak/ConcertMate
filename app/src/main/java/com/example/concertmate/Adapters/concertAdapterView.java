@@ -3,6 +3,7 @@ package com.example.concertmate.Adapters;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -63,23 +66,68 @@ public class concertAdapterView extends RecyclerView.Adapter<concertAdapterView.
                     concert.setFavorite(true);
                     mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
                 } else {
-                    concert.setFavorite(false);
-                    mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
+                    if (concert.isAttending()) {
+                        concert.setFavorite(false);
+                        mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
+                    } else {
+                        mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
+                    }
                 }
             }
         });
-        mDatabase.child("concert").child(concert.getId())
+
+        attend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (attend.isChecked()) {
+                    concert.setAttending(true);
+                    mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
+                } else {
+                    if (concert.isFavorite()) {
+                        concert.setAttending(false);
+                        mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
+                    } else {
+                        mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
+                    }
+                }
+            }
+        });
+
+        mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            box.setChecked(true);
-                            concert.setFavorite(true);
+                            for(DataSnapshot data :dataSnapshot.getChildren()){
+                                if((StringUtils.equalsIgnoreCase(data.getKey(),"favorite"))
+                                        &&(StringUtils.equalsIgnoreCase(data.getValue().toString(),"true"))){
+                                    box.setChecked(true);
+                                    concert.setFavorite(true);
+
+                                }else if ((StringUtils.equalsIgnoreCase(data.getKey(),"favorite"))
+                                        &&(StringUtils.equalsIgnoreCase(data.getValue().toString(),"false"))){
+                                    box.setChecked(false);
+                                    concert.setFavorite(false);
+                                }
+
+                                if((StringUtils.equalsIgnoreCase(data.getKey(),"attending"))
+                                        &&(StringUtils.equalsIgnoreCase(data.getValue().toString(),"true"))){
+                                    attend.setChecked(true);
+                                    concert.setAttending(true);
+
+                                }else if ((StringUtils.equalsIgnoreCase(data.getKey(),"attending"))
+                                        &&(StringUtils.equalsIgnoreCase(data.getValue().toString(),"false"))){
+                                    attend.setChecked(false);
+                                    concert.setAttending(false);
+                                }
+                            }
+
                         } else {
                             box.setChecked(false);
                             concert.setFavorite(false);
+                            attend.setChecked(false);
+                            concert.setAttending(false);
                         }
-
                     }
 
                     @Override
