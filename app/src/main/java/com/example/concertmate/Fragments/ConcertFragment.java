@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.concertmate.Adapters.AttendingConcertAdapter;
 import com.example.concertmate.Adapters.FavoriteConcertAdapter;
 import com.example.concertmate.Adapters.concertAdapterView;
 import com.example.concertmate.Models.Concert;
@@ -43,6 +44,7 @@ public class ConcertFragment extends BaseFragment {
     concertAdapterView adapter;
     FloatingActionButton fab;
     FavoriteConcertAdapter firebaseRecyclerAdapter;
+    AttendingConcertAdapter attendingConcertAdapter;
     ProgressBar pDialog;
     TextView noResults;
     int check;
@@ -100,7 +102,7 @@ public class ConcertFragment extends BaseFragment {
             });
 
 
-        } else {
+        } else if(check ==1) {
             fab.hide();
             pDialog.setVisibility(View.GONE);
             noResults.setVisibility(View.GONE);
@@ -131,6 +133,40 @@ public class ConcertFragment extends BaseFragment {
                 @Override
                 public boolean onQueryTextChange(String s) {
                     firebaseRecyclerAdapter.getFilter().filter(s);
+                    return false;
+                }
+            });
+        }else {
+            fab.hide();
+            pDialog.setVisibility(View.GONE);
+            noResults.setVisibility(View.GONE);
+            auth = FirebaseAuth.getInstance();
+            final Query query;
+            query = FirebaseDatabase.getInstance()
+                    .getReference()
+                    .child("concert").child(auth.getCurrentUser().getUid());
+
+            FirebaseRecyclerOptions<Concert> options =
+                    new FirebaseRecyclerOptions.Builder<Concert>()
+                            .setQuery(query, Concert.class)
+                            .build();
+
+            attendingConcertAdapter = new AttendingConcertAdapter(options, getActivity());
+            attendingConcertAdapter.startListening();
+            RecyclerView mRecycler = view.findViewById(R.id.recycler);
+            mRecycler.setAdapter(attendingConcertAdapter);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+            mRecycler.setLayoutManager(mLayoutManager);
+            mySearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    attendingConcertAdapter.getFilter().filter(s);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    attendingConcertAdapter.getFilter().filter(s);
                     return false;
                 }
             });

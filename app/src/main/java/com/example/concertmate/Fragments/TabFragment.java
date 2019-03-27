@@ -43,6 +43,7 @@ public class TabFragment extends BaseFragment {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.addFragment(concertFragment(), "Concert");
         adapter.addFragment(concertFragment(), "Favorite");
+        adapter.addFragment(concertFragment(), "Attending");
         viewPager.setAdapter(adapter);
     }
 }

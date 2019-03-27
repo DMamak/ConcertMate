@@ -54,57 +54,68 @@ public class FavoriteConcertAdapter extends FirebaseRecyclerAdapter<Concert, Fav
 
     @Override
     protected void onBindViewHolder(ConcertViewHolder holder, int position, final Concert concert) {
-        final CheckBox box = holder.box;
-        final CheckBox attend = holder.attending;
-        attend.setChecked(concert.isAttending());
-        box.setChecked(concert.isFavorite());
-        holder.name.setText(concert.getName());
-        holder.date.setText(concert.getDate());
-        holder.venue.setText(concert.getVenue().getVenueName());
-        Picasso.get().load(concert.getImageURL()).fit().into(holder.picture);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        auth = FirebaseAuth.getInstance();
-        box.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!box.isChecked()) {
-                    if (concert.isAttending()) {
-                        concert.setFavorite(false);
+        if(concert.isAttending() && !concert.isFavorite()) {
+            holder.itemView.setVisibility(View.GONE);
+        }else{
+            holder.itemView.setVisibility(View.VISIBLE);
+        }
+            final CheckBox box = holder.box;
+            final CheckBox attend = holder.attending;
+            attend.setChecked(concert.isAttending());
+            box.setChecked(concert.isFavorite());
+            holder.name.setText(concert.getName());
+            holder.date.setText(concert.getDate());
+            holder.venue.setText(concert.getVenue().getVenueName());
+            Picasso.get().load(concert.getImageURL()).fit().into(holder.picture);
+            mDatabase = FirebaseDatabase.getInstance().getReference();
+            auth = FirebaseAuth.getInstance();
+            box.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!box.isChecked()) {
+                        if (concert.isAttending()) {
+                            concert.setFavorite(false);
+                            mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
+                        } else {
+                            concert.setFavorite(false);
+                            mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
+                        }
+                    }else{
+                        concert.setFavorite(true);
                         mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
-                    } else {
-                        concert.setFavorite(false);
-                        mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
                     }
                 }
-            }
-        });
+            });
 
-        attend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!attend.isChecked()) {
-                    if (concert.isFavorite()) {
-                        concert.setAttending(false);
+            attend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!attend.isChecked()) {
+                        if (concert.isFavorite()) {
+                            concert.setAttending(false);
+                            mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
+                        } else {
+                            concert.setAttending(false);
+                            mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
+                        }
+                    }else{
+                        concert.setAttending(true);
                         mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
-                    } else {
-                        concert.setAttending(false);
-                        mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
                     }
                 }
-            }
-        });
+            });
 
 
-        holder.picture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TinyDB tinydb = new TinyDB(activity);
-                tinydb.putObject("concertObj", concert);
-                BaseFragment.singleEventFragment(activity);
-            }
-        });
+            holder.picture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TinyDB tinydb = new TinyDB(activity);
+                    tinydb.putObject("concertObj", concert);
+                    BaseFragment.singleEventFragment(activity);
+                }
+            });
+}
 
-    }
 
 
     @Override
