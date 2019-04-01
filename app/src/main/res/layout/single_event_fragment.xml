@@ -34,7 +34,18 @@
             android:gravity="center"
             android:layout_weight="1"
             android:visibility="invisible" />
-
+        <CheckBox
+            android:id="@+id/single_attend_icon"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="@drawable/event_icon"
+            android:button="@null"
+            android:checked="false"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_weight="1"
+            android:stateListAnimator="@animator/scale" />
         <CheckBox
             android:id="@+id/single_like_icon"
             android:layout_width="0dp"

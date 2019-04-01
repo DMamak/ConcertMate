@@ -36,3 +36,6 @@ https://developers.google.com/maps/documentation/android-sdk/intro
 
 http://www.zoftino.com/google-maps-android-custom-info-window-example
 
+https://square.github.io/picasso/2.x/picasso/com/squareup/picasso/MemoryPolicy.html
+
+

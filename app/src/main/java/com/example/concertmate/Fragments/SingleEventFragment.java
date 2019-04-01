@@ -23,7 +23,7 @@ import com.squareup.picasso.Picasso;
 import static android.view.View.VISIBLE;
 
 public class SingleEventFragment extends BaseFragment {
-    CheckBox isFav;
+    CheckBox isFav,attending;
     ImageView bandImage;
     Button notesButton;
     Concert concert;
@@ -40,11 +40,18 @@ public class SingleEventFragment extends BaseFragment {
         concert = getJsonConcert(getContext());
 
         isFav = view.findViewById(R.id.single_like_icon);
+        attending=view.findViewById(R.id.single_attend_icon);
         notesButton = view.findViewById(R.id.add_notes_button);
         isFav.setChecked(concert.isFavorite());
         if (concert.isFavorite()) {
             notesButton.setVisibility(VISIBLE);
         }
+
+        attending.setChecked(concert.isAttending());
+        if (concert.isAttending()) {
+            notesButton.setVisibility(VISIBLE);
+        }
+
         isFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,8 +59,29 @@ public class SingleEventFragment extends BaseFragment {
                     concert.setFavorite(true);
                     mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
                 } else {
-                    concert.setFavorite(false);
-                    mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
+                    if (concert.isAttending()) {
+                        concert.setFavorite(false);
+                        mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
+                    } else {
+                        mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
+                    }
+                }
+            }
+        });
+
+        attending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (attending.isChecked()) {
+                    concert.setAttending(true);
+                    mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
+                } else {
+                    if (concert.isFavorite()) {
+                        concert.setAttending(false);
+                        mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
+                    } else {
+                        mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
+                    }
                 }
             }
         });

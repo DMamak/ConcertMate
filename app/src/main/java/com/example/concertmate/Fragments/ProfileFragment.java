@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.concertmate.BaseActivity;
 import com.example.concertmate.MainLoginActivity;
 import com.example.concertmate.R;
@@ -93,7 +94,10 @@ public class ProfileFragment extends Fragment {
         sendReset = view.findViewById(R.id.sendPasswordResetButton);
         username.setText(user.getDisplayName());
         email.setText(user.getEmail());
-        Picasso.get().load(user.getPhotoUrl()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).fit().into(avatar);
+        Glide.with(this)
+                .load(user.getPhotoUrl())
+                .into(avatar);
+
 
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -374,9 +378,9 @@ public class ProfileFragment extends Fragment {
 
         if (requestCode == 1000 && resultCode == Activity.RESULT_OK) {
             final Uri returnUri = data.getData();
-            final UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+            final UserProfileChangeRequest profileAvatarUpdates = new UserProfileChangeRequest.Builder()
                     .setPhotoUri(returnUri).build();
-            auth.getCurrentUser().updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+            auth.getCurrentUser().updateProfile(profileAvatarUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
