@@ -1,12 +1,14 @@
 package com.example.concertmate.Adapters;
 
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.concertmate.Adapters.FirebaseCustomAdapters.FirebaseRecyclerAdapter;
@@ -55,9 +57,7 @@ public class FavoriteConcertAdapter extends FirebaseRecyclerAdapter<Concert, Fav
     @Override
     protected void onBindViewHolder(ConcertViewHolder holder, int position, final Concert concert) {
         if(concert.isAttending() && !concert.isFavorite()) {
-            holder.itemView.setVisibility(View.GONE);
-        }else{
-            holder.itemView.setVisibility(View.VISIBLE);
+            //TODO Hide the object somehow !!!!
         }
             final CheckBox box = holder.box;
             final CheckBox attend = holder.attending;
@@ -80,7 +80,7 @@ public class FavoriteConcertAdapter extends FirebaseRecyclerAdapter<Concert, Fav
                             concert.setFavorite(false);
                             mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
                         }
-                    }else{
+                    } else {
                         concert.setFavorite(true);
                         mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
                     }
@@ -98,7 +98,7 @@ public class FavoriteConcertAdapter extends FirebaseRecyclerAdapter<Concert, Fav
                             concert.setAttending(false);
                             mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).removeValue();
                         }
-                    }else{
+                    } else {
                         concert.setAttending(true);
                         mDatabase.child("concert").child(auth.getCurrentUser().getUid()).child(concert.getId()).setValue(concert);
                     }
@@ -114,9 +114,8 @@ public class FavoriteConcertAdapter extends FirebaseRecyclerAdapter<Concert, Fav
                     BaseFragment.singleEventFragment(activity);
                 }
             });
+
 }
-
-
 
     @Override
     protected boolean filterCondition(Concert model, String filterPattern) {
