@@ -34,3 +34,5 @@ https://developer.android.com/guide/topics/ui/layout/linear
 
 https://developers.google.com/maps/documentation/android-sdk/intro
 
+http://www.zoftino.com/google-maps-android-custom-info-window-example
+
