@@ -1,11 +1,18 @@
 package com.example.concertmate.Fragments;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +29,7 @@ import com.example.concertmate.BaseActivity;
 import com.example.concertmate.MainLoginActivity;
 import com.example.concertmate.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -29,9 +37,15 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.UUID;
 
 public class ProfileFragment extends Fragment {
      Dialog myDialog;
@@ -79,7 +93,28 @@ public class ProfileFragment extends Fragment {
         sendReset = view.findViewById(R.id.sendPasswordResetButton);
         username.setText(user.getDisplayName());
         email.setText(user.getEmail());
-        Picasso.get().load(user.getPhotoUrl()).fit().into(avatar);
+        Picasso.get().load(user.getPhotoUrl()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).fit().into(avatar);
+
+        avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(ActivityCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+                {
+                    requestPermissions(
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            2000);
+                }
+                else {
+                    Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    cameraIntent.setType("image/*");
+                    if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        startActivityForResult(cameraIntent, 1000);
+                    }
+
+                }
+            }
+        });
         deleteProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -333,5 +368,28 @@ public class ProfileFragment extends Fragment {
         myDialog.show();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == 1000 && resultCode == Activity.RESULT_OK) {
+            final Uri returnUri = data.getData();
+            final UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setPhotoUri(returnUri).build();
+            auth.getCurrentUser().updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Picasso.get().load(returnUri).fit().into(avatar);
+                        ((BaseActivity) getActivity()).setImage(returnUri);
+                        Toast.makeText(getActivity(), "Profile Picture Updated Succesfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Failed to update profile picture!", Toast.LENGTH_LONG).show();
+                        Log.e("ERROR", task.getException().toString());
+                    }
+                }
+            });
+
+        }
+    }
 }

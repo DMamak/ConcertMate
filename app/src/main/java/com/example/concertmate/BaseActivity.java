@@ -139,4 +139,7 @@ public class BaseActivity extends AppCompatActivity
     public void setUsername(String usernameText){
         username.setText(usernameText);
     }
+    public void setImage(Uri image){
+        Picasso.get().load(image).fit().into(avatar);
+    }
 }
