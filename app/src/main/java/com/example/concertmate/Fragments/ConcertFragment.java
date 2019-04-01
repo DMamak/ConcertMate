@@ -50,7 +50,8 @@ public class ConcertFragment extends BaseFragment {
     TextView noResults;
     int check;
     //API
-    String id, name, date, time, genre, venueName, postCode, address, longitude, latitude, phone, parking, access, subGenre, youtube, twitter, facebook;
+    String id, name, date, time, genre, venueName, postCode, address, longitude, latitude, phone, parking, access, subGenre, youtube, twitter, facebook
+            ,venueId,venueUrl;
     String imageURL = "";
     RequestQueue mRequestQueue;
     FirebaseAuth auth;
@@ -241,6 +242,16 @@ public class ConcertFragment extends BaseFragment {
 
                                 JSONObject venue = event.getJSONObject("_embedded").getJSONArray("venues").getJSONObject(0);
                                 venueName = venue.getString("name");
+                                venueId = venue.getString("id");
+                               if(venue.has("images")){
+                                   if(venue.getJSONArray("images").length()>0){
+                                       venueUrl =  venue.getJSONArray("images").getJSONObject(0).getString("url");
+                                   }else{
+                                       venueUrl="n/a";
+                                   }
+                                }else{
+                                   venueUrl="n/a";
+                               }
                                 postCode = (venue.has("postalCode")) ? venue.getString("postalCode") : "N/A";
                                 address = (venue.has("address") && venue.getJSONObject("address").has("line1"))
                                         ? venue.getJSONObject("address").getString("line1") : "N/A";
@@ -252,7 +263,7 @@ public class ConcertFragment extends BaseFragment {
                                 parking = venue.has("parkingDetail") ? venue.getString("parkingDetail") : "N/A";
                                 access = (venue.has("accessibleSeatingDetail")) ? venue.getString("accessibleSeatingDetail") : "N/A";
                                 concertList.add(new Concert(id, name, imageURL, date, time, genre, subGenre,
-                                        new Venue(venueName, postCode, address, longitude, latitude, phone, parking, access), false, youtube, twitter, facebook));
+                                        new Venue(venueId,venueUrl,venueName, postCode, address, longitude, latitude, phone, parking, access), false, youtube, twitter, facebook));
                             }
                             noResults.setVisibility(View.GONE);
                             adapter.notifyDataSetChanged();

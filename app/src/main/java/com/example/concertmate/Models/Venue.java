@@ -1,6 +1,8 @@
 package com.example.concertmate.Models;
 
 public class Venue {
+    private String id;
+    private String url;
     private String venueName;
     private String postCode;
     private String address;
@@ -10,7 +12,9 @@ public class Venue {
     private String parking;
     private String accessible;
 
-    public Venue(String venueName, String postCode, String address, String longitude, String latitude, String phoneNumber, String parking, String accessible) {
+    public Venue(String id,String url,String venueName, String postCode, String address, String longitude, String latitude, String phoneNumber, String parking, String accessible) {
+        this.id=id;
+        this.url=url;
         this.venueName = venueName;
         this.postCode = postCode;
         this.address = address;
@@ -24,6 +28,22 @@ public class Venue {
     public Venue() {
     }
 
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public String getVenueName() {
         return venueName;

@@ -36,6 +36,12 @@ public class Concert {
     public Concert() {
     }
 
+    public Concert(String name,String date,String imageURL) {
+        this.name=name;
+        this.date=date;
+        this.imageURL=imageURL;
+    }
+
     public boolean isAttending() {
         return attending;
     }
