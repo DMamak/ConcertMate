@@ -1,14 +1,12 @@
 package com.example.concertmate.Adapters;
 
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.concertmate.Adapters.FirebaseCustomAdapters.FirebaseRecyclerAdapter;
@@ -56,9 +54,6 @@ public class FavoriteConcertAdapter extends FirebaseRecyclerAdapter<Concert, Fav
 
     @Override
     protected void onBindViewHolder(ConcertViewHolder holder, int position, final Concert concert) {
-        if(concert.isAttending() && !concert.isFavorite()) {
-            //TODO Hide the object somehow !!!!
-        }
             final CheckBox box = holder.box;
             final CheckBox attend = holder.attending;
             attend.setChecked(concert.isAttending());

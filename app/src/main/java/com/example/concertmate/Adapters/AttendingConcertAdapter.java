@@ -54,11 +54,6 @@ public class AttendingConcertAdapter extends FirebaseRecyclerAdapter<Concert, At
 
     @Override
     protected void onBindViewHolder(AttendingConcertViewHolder holder, int position, final Concert concert) {
-        if(!concert.isAttending() && concert.isFavorite()) {
-            holder.itemView.setVisibility(View.GONE);
-        }else{
-            holder.itemView.setVisibility(View.VISIBLE);
-        }
         final CheckBox box = holder.box;
         final CheckBox attend = holder.attending;
         attend.setChecked(concert.isAttending());

@@ -112,9 +112,7 @@ public class ConcertFragment extends BaseFragment {
             final Query query;
             query = FirebaseDatabase.getInstance()
                     .getReference()
-                    .child("concert").child(auth.getCurrentUser().getUid()).orderByChild("favorite").equalTo("true","favorite");
-
-            Log.i("INFO",query.toString());
+                    .child("concert").child(auth.getCurrentUser().getUid()).child("").orderByChild("favorite").equalTo(true);
 
 
             FirebaseRecyclerOptions<Concert> options =
@@ -149,7 +147,7 @@ public class ConcertFragment extends BaseFragment {
             final Query query;
             query = FirebaseDatabase.getInstance()
                     .getReference()
-                    .child("concert").child(auth.getCurrentUser().getUid());
+                    .child("concert").child(auth.getCurrentUser().getUid()).child("").orderByChild("attending").equalTo(true);
 
             FirebaseRecyclerOptions<Concert> options =
                     new FirebaseRecyclerOptions.Builder<Concert>()
