@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.concertmate.Fragments.BaseFragment;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 public class MainLoginActivity extends AppCompatActivity {
 
