@@ -29,6 +29,7 @@ import com.bumptech.glide.Glide;
 import com.example.concertmate.BaseActivity;
 import com.example.concertmate.MainLoginActivity;
 import com.example.concertmate.R;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,6 +39,7 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -49,6 +51,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.UUID;
 
 public class ProfileFragment extends Fragment {
+     Uri downloadedURI;
+     StorageReference filepath;
      Dialog myDialog;
      Button changeUsername,changeEmail,changePassword,deleteProfile,sendReset,update;
      ImageButton avatar;
@@ -56,6 +60,7 @@ public class ProfileFragment extends Fragment {
      ProgressBar progressBar,dialogProgressBar;
      FirebaseAuth.AuthStateListener authListener;
      FirebaseAuth auth;
+    StorageReference mStorage;
      EditText newChange,currentPassword;
      FirebaseUser user;
 
@@ -70,6 +75,7 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.profile_fragment, container, false);
         auth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
+        mStorage = FirebaseStorage.getInstance().getReference();
 
         //check if by user is still signed in.
         authListener = new FirebaseAuth.AuthStateListener() {
@@ -94,10 +100,7 @@ public class ProfileFragment extends Fragment {
         sendReset = view.findViewById(R.id.sendPasswordResetButton);
         username.setText(user.getDisplayName());
         email.setText(user.getEmail());
-        Glide.with(this)
-                .load(user.getPhotoUrl())
-                .into(avatar);
-
+        Picasso.get().load(user.getPhotoUrl()).placeholder(R.drawable.avatar_tiny).fit().into(avatar);
 
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -378,22 +381,44 @@ public class ProfileFragment extends Fragment {
 
         if (requestCode == 1000 && resultCode == Activity.RESULT_OK) {
             final Uri returnUri = data.getData();
-            final UserProfileChangeRequest profileAvatarUpdates = new UserProfileChangeRequest.Builder()
-                    .setPhotoUri(returnUri).build();
-            auth.getCurrentUser().updateProfile(profileAvatarUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+            filepath = mStorage.child("Images").child(returnUri.getLastPathSegment());
+            UploadTask uploadTask = filepath.putFile(returnUri);
+
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
-                public void onComplete(@NonNull Task<Void> task) {
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+
+                    // Continue with the task to get the download URL
+                    return filepath.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
-                        Picasso.get().load(returnUri).fit().into(avatar);
-                        ((BaseActivity) getActivity()).setImage(returnUri);
-                        Toast.makeText(getActivity(), "Profile Picture Updated Succesfully", Toast.LENGTH_SHORT).show();
+                        downloadedURI = task.getResult();
+                        final UserProfileChangeRequest profileAvatarUpdates = new UserProfileChangeRequest.Builder()
+                                .setPhotoUri(downloadedURI).build();
+                        auth.getCurrentUser().updateProfile(profileAvatarUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Picasso.get().load(downloadedURI).placeholder(R.drawable.avatar_tiny).fit().into(avatar);
+                                    ((BaseActivity) getActivity()).setImage(downloadedURI);
+                                    Toast.makeText(getActivity(), "Profile Picture Updated Succesfully", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getActivity(), "Failed to update profile picture!", Toast.LENGTH_LONG).show();
+                                    Log.e("ERROR", task.getException().toString());
+                                }
+                            }
+                        });
                     } else {
-                        Toast.makeText(getActivity(), "Failed to update profile picture!", Toast.LENGTH_LONG).show();
                         Log.e("ERROR", task.getException().toString());
                     }
                 }
             });
-
         }
     }
 }

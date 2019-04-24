@@ -85,10 +85,9 @@ public class BaseActivity extends AppCompatActivity
 //                .setDisplayName(username).setPhotoUri(photoUrl).build();
        // auth.getCurrentUser().updateProfile(profileUpdates);
 
-        Log.i("INFO",user.getPhotoUrl().toString());
         setUsername(user.getDisplayName());
         setEmail(user.getEmail());
-        Picasso.get().load(user.getPhotoUrl()).fit().into(avatar);
+        Picasso.get().load(user.getPhotoUrl()).placeholder(R.drawable.avatar_tiny).fit().into(avatar);
 
     }
 
@@ -136,6 +135,6 @@ public class BaseActivity extends AppCompatActivity
         username.setText(usernameText);
     }
     public void setImage(Uri image){
-        Picasso.get().load(image).fit().into(avatar);
+        Picasso.get().load(image).placeholder(R.drawable.avatar_tiny).fit().into(avatar);
     }
 }

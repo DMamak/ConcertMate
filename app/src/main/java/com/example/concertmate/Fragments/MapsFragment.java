@@ -112,7 +112,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
                 return false;
             }
         });
-
+       mMap.getUiSettings().setMapToolbarEnabled(false);
        mMap.setOnInfoWindowCloseListener(new GoogleMap.OnInfoWindowCloseListener() {
            @Override
            public void onInfoWindowClose(Marker marker) {
