@@ -42,6 +42,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
+    String id, name, date, time, genre, venueName, postCode, address, longitude, latitude, phone, parking, access, subGenre, youtube, twitter, facebook
+            ,venueId,venueUrl;
+    String imageURL = "";
     RecyclerView mapRecycler;
     double lat;
     double lng;
@@ -105,7 +108,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
                 concertArrayList=new ArrayList<>();
                 mapRecycler.setVisibility(View.VISIBLE);
                 apiCall((Venue)marker.getTag());
-                mapEventRecyclerAdapter = new mapEventRecycler(concertArrayList);
+                mapEventRecyclerAdapter = new mapEventRecycler(concertArrayList,getActivity());
                 mapRecycler.setAdapter(mapEventRecyclerAdapter);
                 RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
                 mapRecycler.setLayoutManager(mLayoutManager);
@@ -132,21 +135,68 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
                 (Request.Method.GET, url.toString(), new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        try{
+                       try {
                             JSONArray events = response.getJSONObject("_embedded").getJSONArray("events");
-                            String imageUrl="";
                             for (int x = 0; x < events.length(); x++) {
-                                JSONObject event = events.getJSONObject(x);
 
-                                String name = event.getString("name");
-                                String date = event.getJSONObject("dates").getJSONObject("start").getString("localDate");
+                                JSONObject event = events.getJSONObject(x);
+                                id = event.getString("id");
+                                name = event.getString("name");
                                 final JSONArray images = event.getJSONArray("images");
                                 for (int y = 0; y < images.length(); y++) {
                                     if (StringUtils.equalsIgnoreCase(images.getJSONObject(y).getString("width"), "640")) {
-                                        imageUrl = images.getJSONObject(y).getString("url");
+                                        imageURL = images.getJSONObject(y).getString("url");
                                     }
                                 }
-                                concertArrayList.add(new Concert(name,date,imageUrl));
+                                date = event.getJSONObject("dates").getJSONObject("start").getString("localDate");
+                                time = event.getJSONObject("dates").getJSONObject("start").has("localTime") ? event.getJSONObject("dates").getJSONObject("start").getString("localTime") : "TBD";
+                                if(event.has("classifications")){
+                                    if(event.getJSONArray("classifications").getJSONObject(0).has("genre")){
+                                        genre = event.getJSONArray("classifications").getJSONObject(0).getJSONObject("genre").getString("name");
+                                    }
+                                }
+                                subGenre =(event.getJSONArray("classifications").getJSONObject(0).has("subGenre"))? event.getJSONArray("classifications").getJSONObject(0).getJSONObject("subGenre").getString("name") : "N/A";
+                                JSONObject embedded = event.getJSONObject("_embedded");
+                                if (embedded.has("attractions")) {
+                                    JSONObject attractions = embedded.getJSONArray("attractions").getJSONObject(0);
+                                    if (attractions.has("externalLinks")) {
+                                        JSONObject links = attractions.getJSONObject("externalLinks");
+                                        if (links.has("youtube")) {
+                                            youtube = links.getJSONArray("youtube").getJSONObject(0).getString("url");
+                                        }
+                                        if (links.has("twitter")) {
+                                            twitter = links.getJSONArray("twitter").getJSONObject(0).getString("url");
+                                        }
+                                        if (links.has("facebook")) {
+                                            facebook = links.getJSONArray("facebook").getJSONObject(0).getString("url");
+                                        }
+                                    }
+                                }
+
+                                JSONObject venue = event.getJSONObject("_embedded").getJSONArray("venues").getJSONObject(0);
+                                venueName = venue.getString("name");
+                                venueId = venue.getString("id");
+                                if(venue.has("images")){
+                                    if(venue.getJSONArray("images").length()>0){
+                                        venueUrl =  venue.getJSONArray("images").getJSONObject(0).getString("url");
+                                    }else{
+                                        venueUrl="n/a";
+                                    }
+                                }else{
+                                    venueUrl="n/a";
+                                }
+                                postCode = (venue.has("postalCode")) ? venue.getString("postalCode") : "N/A";
+                                address = (venue.has("address") && venue.getJSONObject("address").has("line1"))
+                                        ? venue.getJSONObject("address").getString("line1") : "N/A";
+                                longitude = venue.has("location") && venue.getJSONObject("location").has("longitude") ? venue.getJSONObject("location").getString("longitude") : "N/A";
+                                latitude = venue.has("location") && venue.getJSONObject("location").has("latitude") ? venue.getJSONObject("location").getString("latitude") : "N/A";
+                                phone = (venue.has("boxOfficeInfo") && venue.getJSONObject("boxOfficeInfo").has("phoneNumberDetail"))
+                                        ? venue.getJSONObject("boxOfficeInfo").getString("phoneNumberDetail") : "N/A";
+
+                                parking = venue.has("parkingDetail") ? venue.getString("parkingDetail") : "N/A";
+                                access = (venue.has("accessibleSeatingDetail")) ? venue.getString("accessibleSeatingDetail") : "N/A";
+                                concertArrayList.add(new Concert(id, name, imageURL, date, time, genre, subGenre,
+                                        new Venue(venueId,venueUrl,venueName, postCode, address, longitude, latitude, phone, parking, access), false, youtube, twitter, facebook));
                                 mapEventRecyclerAdapter.notifyDataSetChanged();
                             }
                             mapEventRecyclerAdapter.notifyDataSetChanged();
