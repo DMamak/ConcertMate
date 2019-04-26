@@ -81,4 +81,5 @@
     <string name="dialog_password_new">New Password....</string>
     <string name="current_password">Current Password....</string>
     <string name="title_activity_maps">Map</string>
+    <string name="google_sign_in">Sign in with Google</string>
 </resources>

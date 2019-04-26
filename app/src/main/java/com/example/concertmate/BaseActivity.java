@@ -80,11 +80,6 @@ public class BaseActivity extends AppCompatActivity
         username = headerView.findViewById(R.id.nav_username_text);
         avatar = headerView.findViewById(R.id.nav_avatar);
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-//        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-//                .setDisplayName(username).setPhotoUri(photoUrl).build();
-       // auth.getCurrentUser().updateProfile(profileUpdates);
-
         setUsername(user.getDisplayName());
         setEmail(user.getEmail());
         Picasso.get().load(user.getPhotoUrl()).placeholder(R.drawable.avatar_tiny).fit().into(avatar);
