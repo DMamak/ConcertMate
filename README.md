@@ -38,4 +38,6 @@ http://www.zoftino.com/google-maps-android-custom-info-window-example
 
 https://square.github.io/picasso/2.x/picasso/com/squareup/picasso/MemoryPolicy.html
 
+https://developer.android.com/training/testing/unit-testing/local-unit-tests
 
+https://firebase.google.com/docs/auth/android/google-signin
